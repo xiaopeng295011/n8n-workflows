@@ -1,0 +1,442 @@
+{
+  "name": "IVD Daily Digest Automation",
+  "nodes": [
+    {
+      "id": "cron-trigger-001",
+      "name": "Daily Schedule 18:00",
+      "type": "n8n-nodes-base.cron",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 18,
+              "minute": 0
+            }
+          ]
+        }
+      },
+      "notes": "Triggers the IVD digest workflow daily at 18:00 UTC"
+    },
+    {
+      "id": "execute-runner-002",
+      "name": "Execute IVD Runner",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [460, 300],
+      "parameters": {
+        "command": "={{ $env.PYTHON_EXECUTABLE || 'python3' }} -m src.ivd_monitor.runner --output {{ $env.IVD_OUTPUT_DIR || '/tmp/ivd_digest' }} --formats html text --json",
+        "cwd": "={{ $env.IVD_PROJECT_DIR || '/home/engine/project' }}"
+      },
+      "notes": "Executes the IVD monitor runner to collect data, enrich records, and generate digest"
+    },
+    {
+      "id": "parse-output-003",
+      "name": "Parse Runner Output",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [680, 300],
+      "parameters": {
+        "functionCode": "const stdout = items[0].json.stdout || '';\nconst stderr = items[0].json.stderr || '';\nconst exitCode = items[0].json.exitCode || 0;\n\nlet summary = {};\ntry {\n  // Parse JSON output from runner\n  summary = JSON.parse(stdout);\n} catch (e) {\n  summary = {\n    error: 'Failed to parse runner output',\n    stdout: stdout,\n    stderr: stderr,\n    exitCode: exitCode\n  };\n}\n\nreturn [{\n  json: {\n    ...summary,\n    exitCode: exitCode,\n    stderr: stderr,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "notes": "Parses the JSON output from the runner to extract summary metrics"
+    },
+    {
+      "id": "check-status-004",
+      "name": "Check Run Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [900, 300],
+      "parameters": {
+        "conditions": {
+          "boolean": [],
+          "number": [
+            {
+              "value1": "={{ $json.exitCode }}",
+              "operation": "equal",
+              "value2": 0
+            }
+          ]
+        }
+      },
+      "notes": "Routes to success or error branch based on exit code"
+    },
+    {
+      "id": "read-html-005",
+      "name": "Read HTML Digest",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [1120, 200],
+      "parameters": {
+        "filePath": "={{ $env.IVD_OUTPUT_DIR || '/tmp/ivd_digest' }}/digest_{{ $today.format('YYYY-MM-DD') }}.html"
+      },
+      "notes": "Reads the generated HTML digest file"
+    },
+    {
+      "id": "read-text-006",
+      "name": "Read Text Digest",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [1120, 320],
+      "parameters": {
+        "filePath": "={{ $env.IVD_OUTPUT_DIR || '/tmp/ivd_digest' }}/digest_{{ $today.format('YYYY-MM-DD') }}.txt"
+      },
+      "notes": "Reads the generated plaintext digest file"
+    },
+    {
+      "id": "prepare-email-007",
+      "name": "Prepare Email Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [1340, 200],
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "subject",
+              "value": "={{ ($env.IVD_DIGEST_SUBJECT_FORMAT || 'IVD Monitor Daily Digest - {date}').replace('{date}', $today.format('YYYY-MM-DD')) }}"
+            },
+            {
+              "name": "to",
+              "value": "={{ $env.IVD_DIGEST_RECIPIENTS || 'team@example.com' }}"
+            },
+            {
+              "name": "htmlBody",
+              "value": "={{ $node['Read HTML Digest'].binary.data.toString('utf8') }}"
+            },
+            {
+              "name": "textBody",
+              "value": "={{ $node['Read Text Digest'].binary.data.toString('utf8') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "notes": "Prepares email metadata and content from digest files"
+    },
+    {
+      "id": "send-email-008",
+      "name": "Send Digest Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1560, 200],
+      "parameters": {
+        "fromEmail": "={{ $env.IVD_FROM_EMAIL || 'noreply@example.com' }}",
+        "toEmail": "={{ $json.to }}",
+        "subject": "={{ $json.subject }}",
+        "emailFormat": "html",
+        "message": "={{ $json.htmlBody }}",
+        "options": {
+          "allowUnauthorizedCerts": false,
+          "appendAttribution": false
+        }
+      },
+      "credentials": {
+        "smtp": {
+          "id": "{{ $env.IVD_SMTP_CREDENTIALS_ID }}",
+          "name": "IVD SMTP Account"
+        }
+      },
+      "notes": "Sends the digest email to configured recipients"
+    },
+    {
+      "id": "log-success-009",
+      "name": "Log Success",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1780, 200],
+      "parameters": {
+        "functionCode": "const summary = items[0].json;\nconsole.log('IVD Digest sent successfully');\nconsole.log(`Records: ${summary.records_inserted || 0} inserted, ${summary.records_updated || 0} updated`);\nconsole.log(`Sources: ${summary.successful_sources || 0}/${summary.total_sources || 0} successful`);\nif (summary.failed_sources && summary.failed_sources.length > 0) {\n  console.warn(`Failed sources: ${summary.failed_sources.join(', ')}`);\n}\nreturn items;"
+      },
+      "notes": "Logs success metrics for monitoring"
+    },
+    {
+      "id": "error-notify-010",
+      "name": "Prepare Error Notification",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [1120, 420],
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "errorTitle",
+              "value": "🚨 IVD Monitor Pipeline Failed"
+            },
+            {
+              "name": "errorMessage",
+              "value": "The IVD monitoring pipeline encountered errors:\n\nExit Code: {{ $json.exitCode }}\nFailed Sources: {{ $json.failed_sources ? $json.failed_sources.join(', ') : 'None' }}\nErrors: {{ $json.errors ? $json.errors.join('\\n') : 'Unknown error' }}\n\nTimestamp: {{ $json.timestamp }}\n\nPlease investigate the logs for details."
+            },
+            {
+              "name": "severity",
+              "value": "high"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "notes": "Prepares error notification details"
+    },
+    {
+      "id": "send-error-email-011",
+      "name": "Send Error Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [1340, 420],
+      "parameters": {
+        "fromEmail": "={{ $env.IVD_FROM_EMAIL || 'noreply@example.com' }}",
+        "toEmail": "={{ $env.IVD_ERROR_RECIPIENTS || $env.IVD_DIGEST_RECIPIENTS || 'alerts@example.com' }}",
+        "subject": "={{ $json.errorTitle }} - {{ $today.format('YYYY-MM-DD') }}",
+        "emailFormat": "text",
+        "message": "={{ $json.errorMessage }}",
+        "options": {}
+      },
+      "credentials": {
+        "smtp": {
+          "id": "{{ $env.IVD_SMTP_CREDENTIALS_ID }}",
+          "name": "IVD SMTP Account"
+        }
+      },
+      "notes": "Sends error notification email to administrators"
+    },
+    {
+      "id": "send-slack-alert-012",
+      "name": "Send Slack Alert",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 1,
+      "position": [1340, 540],
+      "parameters": {
+        "channel": "={{ $env.IVD_SLACK_CHANNEL || '#alerts' }}",
+        "text": "={{ $json.errorTitle }}",
+        "attachments": [
+          {
+            "color": "danger",
+            "fields": {
+              "item": [
+                {
+                  "short": true,
+                  "title": "Exit Code",
+                  "value": "={{ $json.exitCode }}"
+                },
+                {
+                  "short": true,
+                  "title": "Date",
+                  "value": "={{ $today.format('YYYY-MM-DD') }}"
+                },
+                {
+                  "short": false,
+                  "title": "Failed Sources",
+                  "value": "={{ $json.failed_sources ? $json.failed_sources.join(', ') : 'None' }}"
+                },
+                {
+                  "short": false,
+                  "title": "Errors",
+                  "value": "={{ $json.errors ? $json.errors.slice(0, 3).join('\\n') : 'Unknown' }}"
+                }
+              ]
+            }
+          }
+        ],
+        "otherOptions": {}
+      },
+      "credentials": {
+        "slackApi": {
+          "id": "{{ $env.IVD_SLACK_CREDENTIALS_ID }}",
+          "name": "IVD Slack"
+        }
+      },
+      "notes": "Sends alert to Slack channel (optional)"
+    },
+    {
+      "id": "log-error-013",
+      "name": "Log Error",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1560, 420],
+      "parameters": {
+        "functionCode": "const summary = items[0].json;\nconsole.error('IVD Monitor pipeline failed');\nconsole.error(`Exit code: ${summary.exitCode}`);\nconsole.error(`Failed sources: ${summary.failed_sources ? summary.failed_sources.join(', ') : 'none'}`);\nif (summary.errors && summary.errors.length > 0) {\n  summary.errors.forEach(err => console.error(`Error: ${err}`));\n}\nreturn items;"
+      },
+      "notes": "Logs error details for system monitoring"
+    },
+    {
+      "id": "workflow-doc-014",
+      "name": "Workflow Documentation",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [240, 80],
+      "parameters": {
+        "content": "# IVD Daily Digest Automation\n\n## Overview\nAutomated daily workflow for IVD (In Vitro Diagnostics) monitoring:\n- Collects data from configured sources\n- Enriches records with company matching and categorization\n- Persists to database\n- Generates HTML/text email digests\n- Sends digest to stakeholders\n\n## Schedule\n- **Trigger**: Daily at 18:00 UTC\n- **Runtime**: ~5-10 minutes typical\n\n## Environment Variables\n- `IVD_PROJECT_DIR`: Project root directory\n- `PYTHON_EXECUTABLE`: Python interpreter path\n- `IVD_OUTPUT_DIR`: Digest output directory\n- `IVD_DIGEST_RECIPIENTS`: Email recipients (comma-separated)\n- `IVD_ERROR_RECIPIENTS`: Error notification recipients\n- `IVD_FROM_EMAIL`: Sender email address\n- `IVD_SMTP_CREDENTIALS_ID`: n8n SMTP credential ID\n- `IVD_SLACK_CHANNEL`: Slack channel for alerts\n- `IVD_SLACK_CREDENTIALS_ID`: n8n Slack credential ID\n\n## Error Handling\n- Exit code 0: Success\n- Exit code 1: Fatal errors\n- Exit code 2: Partial success (some sources failed)\n- All errors trigger notifications\n- Workflow continues on schedule regardless of failures\n\n## Monitoring\n- Success: Logs metrics to console\n- Failure: Sends email + Slack alert\n- Check logs for detailed execution traces"
+      }
+    }
+  ],
+  "connections": {
+    "Daily Schedule 18:00": {
+      "main": [
+        [
+          {
+            "node": "Execute IVD Runner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute IVD Runner": {
+      "main": [
+        [
+          {
+            "node": "Parse Runner Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Runner Output": {
+      "main": [
+        [
+          {
+            "node": "Check Run Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Run Status": {
+      "main": [
+        [
+          {
+            "node": "Read HTML Digest",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Read Text Digest",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Prepare Error Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read HTML Digest": {
+      "main": [
+        [
+          {
+            "node": "Prepare Email Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Text Digest": {
+      "main": [
+        [
+          {
+            "node": "Prepare Email Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Email Data": {
+      "main": [
+        [
+          {
+            "node": "Send Digest Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Digest Email": {
+      "main": [
+        [
+          {
+            "node": "Log Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Error Notification": {
+      "main": [
+        [
+          {
+            "node": "Send Error Email",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Slack Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Error Email": {
+      "main": [
+        [
+          {
+            "node": "Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Slack Alert": {
+      "main": [
+        [
+          {
+            "node": "Log Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": null,
+    "timezone": "UTC",
+    "executionTimeout": 600,
+    "maxExecutions": 10,
+    "retryOnFail": false
+  },
+  "meta": {
+    "instanceId": "ivd-daily-digest-workflow",
+    "versionId": "1.0.0",
+    "createdAt": "2025-01-15T00:00:00.000Z",
+    "updatedAt": "2025-01-15T00:00:00.000Z",
+    "owner": "ivd-monitor",
+    "category": "automation",
+    "status": "active",
+    "environment": "production"
+  },
+  "tags": [
+    "ivd-monitor",
+    "daily-digest",
+    "automation",
+    "healthcare",
+    "monitoring"
+  ],
+  "staticData": {},
+  "notes": "IVD Daily Digest Automation - Orchestrates daily data collection, enrichment, and digest email generation for In Vitro Diagnostics monitoring system."
+}

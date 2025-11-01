@@ -1,0 +1,62 @@
+{
+  "sources": [
+    {
+      "name": "cninfo_financial_reports",
+      "type": "rss",
+      "url": "https://example.com/cninfo/rss",
+      "enabled": false,
+      "metadata": {
+        "category": "financial_reports",
+        "region": "CN",
+        "priority": "high"
+      }
+    },
+    {
+      "name": "nmpa_product_approvals",
+      "type": "scraper",
+      "url": "https://example.com/nmpa/approvals",
+      "enabled": false,
+      "metadata": {
+        "category": "product_launches",
+        "region": "CN",
+        "priority": "high"
+      }
+    },
+    {
+      "name": "nhsa_policy_updates",
+      "type": "api",
+      "url": "https://example.com/api/nhsa/policies",
+      "enabled": false,
+      "metadata": {
+        "category": "nhsa_policy",
+        "region": "CN",
+        "priority": "critical"
+      }
+    },
+    {
+      "name": "bidding_platform_scraper",
+      "type": "scraper",
+      "url": "https://example.com/bidding/search",
+      "enabled": false,
+      "metadata": {
+        "category": "bidding_tendering",
+        "region": "CN",
+        "priority": "medium"
+      }
+    },
+    {
+      "name": "industry_news_aggregator",
+      "type": "rss",
+      "url": "https://example.com/industry/feed",
+      "enabled": false,
+      "metadata": {
+        "category": "industry_media",
+        "region": "CN",
+        "priority": "low"
+      }
+    }
+  ],
+  "timeout": 30,
+  "max_retries": 3,
+  "user_agent": "IVD-Monitor/1.0 (Medical Intelligence Aggregator)"
+}
