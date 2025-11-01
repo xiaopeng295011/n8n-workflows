@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ subject }}</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', 'Microsoft YaHei', Arial, sans-serif; background-color: #f5f5f5; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #f5f5f5;">
+        <tr>
+            <td align="center" style="padding: 20px 0;">
+                <!-- Main container -->
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" style="background-color: #ffffff; max-width: 600px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <!-- Header -->
+                    <tr>
+                        <td style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 40px; text-align: center;">
+                            <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 600; letter-spacing: 0.5px;">IVD Monitor Daily Digest</h1>
+                            <p style="margin: 10px 0 0 0; color: #ffffff; font-size: 14px; opacity: 0.95;">{{ digest_date }}</p>
+                        </td>
+                    </tr>
+                    
+                    <!-- Intro section -->
+                    <tr>
+                        <td style="padding: 30px 40px 20px 40px;">
+                            <p style="margin: 0 0 15px 0; color: #333333; font-size: 15px; line-height: 1.6;">{{ intro_text }}</p>
+                            
+                            <!-- Metadata summary -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background-color: #f8f9fa; border-radius: 6px; margin-top: 15px;">
+                                <tr>
+                                    <td style="padding: 15px 20px;">
+                                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+                                            <tr>
+                                                <td style="color: #666666; font-size: 13px; padding: 3px 0;">
+                                                    <strong style="color: #333333;">Total Records:</strong> {{ total_count }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #666666; font-size: 13px; padding: 3px 0;">
+                                                    <strong style="color: #333333;">Categories:</strong> {{ category_count }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="color: #666666; font-size: 13px; padding: 3px 0;">
+                                                    <strong style="color: #333333;">Companies:</strong> {{ company_count }}
+                                                </td>
+                                            </tr>
+                                            {% if failed_sources %}
+                                            <tr>
+                                                <td style="color: #dc3545; font-size: 13px; padding: 3px 0;">
+                                                    <strong>Failed Sources:</strong> {{ failed_sources|join(', ') }}
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    
+                    <!-- Categories content -->
+                    {% for category_name, category_data in categories.items() %}
+                    <tr>
+                        <td style="padding: 10px 40px 20px 40px;">
+                            <!-- Category header -->
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 15px;">
+                                <tr>
+                                    <td style="border-bottom: 3px solid #667eea; padding-bottom: 10px;">
+                                        <h2 style="margin: 0; color: #333333; font-size: 20px; font-weight: 600;">
+                                            {{ category_data.display_name }} 
+                                            <span style="color: #999999; font-size: 14px; font-weight: 400;">({{ category_data.count }})</span>
+                                        </h2>
+                                    </td>
+                                </tr>
+                            </table>
+                            
+                            <!-- Company groups within category -->
+                            {% for company_name, records in category_data.records_by_company.items() %}
+                            <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 20px; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden;">
+                                <!-- Company header -->
+                                <tr>
+                                    <td style="background-color: #f8f9fa; padding: 12px 20px; border-bottom: 1px solid #e0e0e0;">
+                                        <h3 style="margin: 0; color: #495057; font-size: 16px; font-weight: 500;">
+                                            {{ company_name }}
+                                            <span style="color: #999999; font-size: 13px; font-weight: 400;">({{ records|length }})</span>
+                                        </h3>
+                                    </td>
+                                </tr>
+                                
+                                <!-- Records -->
+                                {% for record in records %}
+                                <tr>
+                                    <td style="padding: 20px; {% if not loop.last %}border-bottom: 1px solid #f0f0f0;{% endif %}">
+                                        <!-- Title -->
+                                        <h4 style="margin: 0 0 8px 0; color: #333333; font-size: 15px; font-weight: 500; line-height: 1.4;">
+                                            <a href="{{ record.url }}" style="color: #667eea; text-decoration: none;">{{ record.title }}</a>
+                                        </h4>
+                                        
+                                        <!-- Metadata row -->
+                                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-bottom: 10px;">
+                                            <tr>
+                                                <td style="color: #999999; font-size: 12px;">
+                                                    <span style="margin-right: 15px;">
+                                                        <strong style="color: #666666;">Source:</strong> {{ record.source }}
+                                                    </span>
+                                                    <span>
+                                                        <strong style="color: #666666;">Date:</strong> {{ record.publish_date }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        
+                                        <!-- Summary -->
+                                        {% if record.summary %}
+                                        <p style="margin: 0 0 12px 0; color: #666666; font-size: 14px; line-height: 1.6;">
+                                            {{ record.summary }}
+                                        </p>
+                                        {% endif %}
+                                        
+                                        <!-- Call to action -->
+                                        <a href="{{ record.url }}" style="display: inline-block; padding: 8px 16px; background-color: #667eea; color: #ffffff; text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: 500;">
+                                            View Details →
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #f8f9fa; padding: 25px 40px; border-top: 1px solid #e0e0e0;">
+                            <p style="margin: 0 0 10px 0; color: #666666; font-size: 13px; line-height: 1.5; text-align: center;">
+                                Generated at {{ generated_at }}
+                            </p>
+                            <p style="margin: 0; color: #999999; font-size: 12px; line-height: 1.5; text-align: center;">
+                                This is an automated digest from the IVD Monitor system.<br>
+                                For questions or feedback, please contact your system administrator.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

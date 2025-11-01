@@ -53,3 +53,32 @@ Captures metadata for each ingestion execution (start/end timestamps, total proc
 - Query helpers for retrieving records by day, category, or company, as well as ingestion metric summaries and FTS search
 
 Because this IVD database is standalone, it can be initialised without touching the existing `workflows.db` index. Running the CLI command only affects `database/ivd_monitor.db` unless you override the path explicitly.
+
+## Enrichment pipeline
+
+Records should be enriched with company matches and digest categories before they are persisted. See [`docs/ivd_company_matching.md`](./ivd_company_matching.md) for detailed guidance on:
+
+- Maintaining the IVD company dataset (`config/ivd_companies.json`)
+- Configuring the `CompanyMatcher` heuristics and overrides
+- Updating categorisation rules handled by `CategoryClassifier`
+- Running the enrichment-specific test suites
+
+## Email digest preview
+
+The daily digest email is generated with reusable Jinja2 templates located in `templates/ivd`. To preview the HTML, plaintext, or CSV output locally without sending an email, use the helper CLI:
+
+```bash
+python -m src.ivd_monitor.email_builder --date 2024-01-15 --format html --output digest.html
+python -m src.ivd_monitor.email_builder --date 2024-01-15 --format text
+python -m src.ivd_monitor.email_builder --date 2024-01-15 --format csv --output digest.csv
+```
+
+The preview command reads configuration from environment variables when available (see `.env.ivd.example` for a starting point):
+
+- `IVD_DIGEST_SUBJECT_FORMAT` — subject template with `{date}` placeholder
+- `IVD_DIGEST_INTRO_TEXT` — introductory paragraph displayed at the top of the digest
+- `IVD_DIGEST_RECIPIENTS` — comma-separated default recipient list for downstream transport
+
+### Email client compatibility
+
+The HTML template renders with inline CSS optimised for common desktop and mobile clients (Outlook, Apple Mail, Gmail). Layout uses table-based sections, conservative typography, and UTF-8 encoding so that Simplified Chinese characters render correctly. When embedding the output in your email transport, ensure the message is sent as multipart/alternative (HTML + plaintext) to preserve accessibility and fallback behaviour.
