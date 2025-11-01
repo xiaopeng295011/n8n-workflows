@@ -1,0 +1,22 @@
+{
+  "data": {
+    "resultList": [
+      {
+        "title": "国家医疗设备采购项目一",
+        "url": "/cggg/zygg/notice-1.html",
+        "timeOpen": "2024-03-01 10:00:00",
+        "brief": "项目采购概要",
+        "pubType": "招标公告",
+        "budget": "100万元"
+      },
+      {
+        "title": "国家医疗设备采购项目二",
+        "url": "/cggg/zygg/notice-2.html",
+        "timeOpen": "2024-03-02 09:30:00",
+        "brief": "第二个项目",
+        "pubType": "中标公告",
+        "budget": "85万元"
+      }
+    ]
+  }
+}
