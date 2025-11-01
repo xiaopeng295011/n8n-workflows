@@ -11,3 +11,6 @@ lxml>=4.9.0,<6.0.0
 
 # Testing
 pytest>=7.4.0,<8.0.0
+
+# Matching
+rapidfuzz>=3.7.0,<4.0.0

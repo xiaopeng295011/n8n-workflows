@@ -1,0 +1,396 @@
+{
+  "companies": [
+    {
+      "name": "迈瑞医疗",
+      "english_name": "Mindray Medical",
+      "stock_code": "300760.SZ",
+      "aliases": [
+        "迈瑞",
+        "Mindray",
+        "深圳迈瑞",
+        "Shenzhen Mindray"
+      ],
+      "keywords": [
+        "生化分析",
+        "血液分析",
+        "免疫分析",
+        "体外诊断",
+        "监护仪",
+        "超声系统"
+      ]
+    },
+    {
+      "name": "安图生物",
+      "english_name": "Autobio Diagnostics",
+      "stock_code": "603658.SH",
+      "aliases": [
+        "安图",
+        "Autobio",
+        "郑州安图",
+        "安图诊断"
+      ],
+      "keywords": [
+        "化学发光",
+        "磁微粒化学发光",
+        "免疫诊断",
+        "微生物检测"
+      ]
+    },
+    {
+      "name": "华大基因",
+      "english_name": "BGI Genomics",
+      "stock_code": "300676.SZ",
+      "aliases": [
+        "华大",
+        "BGI",
+        "深圳华大",
+        "华大智造"
+      ],
+      "keywords": [
+        "基因测序",
+        "无创产前",
+        "肿瘤检测",
+        "生育健康",
+        "感染防控"
+      ]
+    },
+    {
+      "name": "达安基因",
+      "english_name": "Da An Gene",
+      "stock_code": "002030.SZ",
+      "aliases": [
+        "达安",
+        "Da An",
+        "中山达安"
+      ],
+      "keywords": [
+        "分子诊断",
+        "核酸检测",
+        "PCR试剂",
+        "荧光定量PCR"
+      ]
+    },
+    {
+      "name": "迪安诊断",
+      "english_name": "Dian Diagnostics",
+      "stock_code": "300244.SZ",
+      "aliases": [
+        "迪安",
+        "Dian",
+        "浙江迪安"
+      ],
+      "keywords": [
+        "第三方医学检验",
+        "独立医学实验室",
+        "ICL",
+        "医学诊断服务"
+      ]
+    },
+    {
+      "name": "金域医学",
+      "english_name": "Kingmed Diagnostics",
+      "stock_code": "603882.SH",
+      "aliases": [
+        "金域",
+        "Kingmed",
+        "广州金域"
+      ],
+      "keywords": [
+        "第三方医学检验",
+        "独立医学实验室",
+        "病理诊断",
+        "特检项目"
+      ]
+    },
+    {
+      "name": "艾德生物",
+      "english_name": "Aidea Pharmaceuticals",
+      "stock_code": "300685.SZ",
+      "aliases": [
+        "艾德",
+        "Aidea",
+        "厦门艾德"
+      ],
+      "keywords": [
+        "肿瘤精准医疗",
+        "伴随诊断",
+        "基因检测",
+        "靶向药物"
+      ]
+    },
+    {
+      "name": "诺辉健康",
+      "english_name": "New Horizon Health",
+      "stock_code": "6606.HK",
+      "aliases": [
+        "诺辉",
+        "New Horizon",
+        "Novodiag"
+      ],
+      "keywords": [
+        "癌症早筛",
+        "结直肠癌",
+        "粪便DNA",
+        "居家检测"
+      ]
+    },
+    {
+      "name": "贝瑞基因",
+      "english_name": "Berry Genomics",
+      "stock_code": "000710.SZ",
+      "aliases": [
+        "贝瑞",
+        "Berry",
+        "北京贝瑞"
+      ],
+      "keywords": [
+        "基因检测",
+        "无创产前筛查",
+        "NIPT",
+        "遗传病检测"
+      ]
+    },
+    {
+      "name": "万孚生物",
+      "english_name": "Wondfo Biotech",
+      "stock_code": "300482.SZ",
+      "aliases": [
+        "万孚",
+        "Wondfo",
+        "广州万孚"
+      ],
+      "keywords": [
+        "POCT",
+        "即时检测",
+        "快速诊断",
+        "床旁检测",
+        "胶体金"
+      ]
+    },
+    {
+      "name": "新产业生物",
+      "english_name": "Snibe Diagnostics",
+      "stock_code": "300832.SZ",
+      "aliases": [
+        "新产业",
+        "Snibe",
+        "深圳新产业"
+      ],
+      "keywords": [
+        "化学发光",
+        "免疫诊断",
+        "全自动化学发光"
+      ]
+    },
+    {
+      "name": "透景生命",
+      "english_name": "透景生命",
+      "stock_code": "300642.SZ",
+      "aliases": [
+        "透景",
+        "Transparent Life"
+      ],
+      "keywords": [
+        "肿瘤标志物",
+        "流式荧光",
+        "自身免疫诊断"
+      ]
+    },
+    {
+      "name": "基蛋生物",
+      "english_name": "Getein Biotech",
+      "stock_code": "603387.SH",
+      "aliases": [
+        "基蛋",
+        "Getein",
+        "南京基蛋"
+      ],
+      "keywords": [
+        "POCT",
+        "即时检测",
+        "心脏标志物",
+        "炎症检测"
+      ]
+    },
+    {
+      "name": "圣湘生物",
+      "english_name": "Sansure Biotech",
+      "stock_code": "688289.SH",
+      "aliases": [
+        "圣湘",
+        "Sansure",
+        "长沙圣湘"
+      ],
+      "keywords": [
+        "分子诊断",
+        "核酸检测",
+        "感染性疾病",
+        "病毒检测"
+      ]
+    },
+    {
+      "name": "凯普生物",
+      "english_name": "Hybribio",
+      "stock_code": "300639.SZ",
+      "aliases": [
+        "凯普",
+        "Hybribio",
+        "潮州凯普"
+      ],
+      "keywords": [
+        "HPV检测",
+        "分子诊断",
+        "宫颈癌筛查"
+      ]
+    },
+    {
+      "name": "亚辉龙",
+      "english_name": "Yahuilong",
+      "stock_code": "688575.SH",
+      "aliases": [
+        "亚辉龙",
+        "深圳亚辉龙"
+      ],
+      "keywords": [
+        "化学发光",
+        "免疫诊断",
+        "传染病检测"
+      ]
+    },
+    {
+      "name": "热景生物",
+      "english_name": "Hotgen Biotech",
+      "stock_code": "688068.SH",
+      "aliases": [
+        "热景",
+        "Hotgen",
+        "北京热景"
+      ],
+      "keywords": [
+        "POCT",
+        "即时检测",
+        "上转发光"
+      ]
+    },
+    {
+      "name": "东方生物",
+      "english_name": "Orient Gene Biotech",
+      "stock_code": "688298.SH",
+      "aliases": [
+        "东方",
+        "Orient Gene",
+        "浙江东方"
+      ],
+      "keywords": [
+        "POCT",
+        "快速检测",
+        "传染病诊断"
+      ]
+    },
+    {
+      "name": "科华生物",
+      "english_name": "Shanghai Kehua Bio-engineering",
+      "stock_code": "002022.SZ",
+      "aliases": [
+        "科华",
+        "Kehua",
+        "上海科华"
+      ],
+      "keywords": [
+        "生化诊断",
+        "免疫诊断",
+        "诊断试剂"
+      ]
+    },
+    {
+      "name": "九强生物",
+      "english_name": "Jiuqiang Biotech",
+      "stock_code": "300406.SZ",
+      "aliases": [
+        "九强",
+        "Jiuqiang",
+        "北京九强"
+      ],
+      "keywords": [
+        "生化诊断",
+        "血型诊断",
+        "糖化血红蛋白"
+      ]
+    },
+    {
+      "name": "罗氏诊断",
+      "english_name": "Roche Diagnostics",
+      "stock_code": null,
+      "aliases": [
+        "罗氏",
+        "Roche",
+        "罗氏制药"
+      ],
+      "keywords": [
+        "免疫诊断",
+        "分子诊断",
+        "组织诊断",
+        "血糖监测"
+      ]
+    },
+    {
+      "name": "雅培诊断",
+      "english_name": "Abbott Diagnostics",
+      "stock_code": null,
+      "aliases": [
+        "雅培",
+        "Abbott"
+      ],
+      "keywords": [
+        "免疫诊断",
+        "血糖监测",
+        "分子诊断",
+        "POCT"
+      ]
+    },
+    {
+      "name": "西门子医疗",
+      "english_name": "Siemens Healthineers",
+      "stock_code": null,
+      "aliases": [
+        "西门子",
+        "Siemens",
+        "西门子医学"
+      ],
+      "keywords": [
+        "免疫诊断",
+        "生化诊断",
+        "血气分析",
+        "影像诊断"
+      ]
+    },
+    {
+      "name": "贝克曼",
+      "english_name": "Beckman Coulter",
+      "stock_code": null,
+      "aliases": [
+        "Beckman",
+        "贝克曼库尔特"
+      ],
+      "keywords": [
+        "血液分析",
+        "生化免疫",
+        "流式细胞术"
+      ]
+    },
+    {
+      "name": "丹纳赫",
+      "english_name": "Danaher",
+      "stock_code": null,
+      "aliases": [
+        "Danaher",
+        "丹纳赫集团"
+      ],
+      "keywords": [
+        "分子诊断",
+        "免疫诊断",
+        "微生物诊断"
+      ]
+    }
+  ]
+}
