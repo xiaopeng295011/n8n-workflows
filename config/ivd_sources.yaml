@@ -1,0 +1,164 @@
+# IVD Monitor Sources Configuration
+# Defines metadata and settings for each data collector
+
+sources:
+  # Financial Data Sources
+  financial.cninfo_juchao:
+    enabled: true
+    source_name: "CNInfo Juchao"
+    source_type: "financial_reports"
+    default_category: "financial_reports"
+    language_encoding: "utf-8"
+    region: "CN"
+    pagination_strategy: "api_page"
+    page_size: 30
+    max_pages: 5
+    date_window_days: 30
+    rate_limit_delay_ms: 200
+    description: |
+      巨潮资讯网 (CNInfo) is the official disclosure platform for listed companies
+      in China. It aggregates announcements from SSE and SZSE.
+    fallback_strategy: |
+      If the official JSON API changes or fails, consider switching to HTML parsing
+      from https://www.cninfo.com.cn/new/fulltextSearch or the RSS feed endpoint.
+    required_params:
+      - pageNum: Page number (1-based)
+      - pageSize: Records per page
+      - seDate: Date range in format YYYY-MM-DD~YYYY-MM-DD
+
+  financial.shanghai_exchange:
+    enabled: true
+    source_name: "Shanghai Stock Exchange"
+    source_type: "financial_reports"
+    default_category: "financial_reports"
+    language_encoding: "utf-8"
+    region: "CN"
+    pagination_strategy: "api_page"
+    page_size: 25
+    max_pages: 5
+    date_window_days: 30
+    rate_limit_delay_ms: 300
+    description: |
+      Shanghai Stock Exchange (SSE) company bulletins and regulatory filings.
+      The JSON endpoint provides structured announcement data.
+    fallback_strategy: |
+      If the query endpoint fails, switch to scraping the HTML listing pages at
+      https://www.sse.com.cn/disclosure/listedinfo/announcement/.
+    required_params:
+      - pageHelp.pageSize: Records per page
+      - pageHelp.pageNo: Page number (1-based)
+
+  financial.shenzhen_exchange:
+    enabled: true
+    source_name: "Shenzhen Stock Exchange"
+    source_type: "financial_reports"
+    default_category: "financial_reports"
+    language_encoding: "utf-8"
+    region: "CN"
+    pagination_strategy: "api_page"
+    page_size: 30
+    max_pages: 5
+    date_window_days: 30
+    rate_limit_delay_ms: 300
+    description: |
+      Shenzhen Stock Exchange (SZSE) announcement API. Returns JSON with
+      company disclosures and filings.
+    fallback_strategy: |
+      If API changes, fall back to parsing the HTML listing at
+      https://www.szse.cn/disclosure/listed/notice/.
+    required_params:
+      - channelCode: Content channel identifier
+      - seDate: Date range in format YYYY-MM-DD~YYYY-MM-DD
+      - pageSize: Records per page
+      - pageNum: Page number (0-based for SZSE)
+
+  # Regulatory Data Sources
+  regulatory.nmpa_approvals:
+    enabled: true
+    source_name: "National Medical Products Administration"
+    source_type: "product_launches"
+    default_category: "product_launches"
+    language_encoding: "utf-8"
+    region: "CN"
+    pagination_strategy: "api_page"
+    page_size: 20
+    max_pages: 5
+    date_window_days: 90
+    rate_limit_delay_ms: 500
+    description: |
+      NMPA (国家药品监督管理局) publishes product approval information for
+      medical devices, diagnostics, and pharmaceuticals.
+    fallback_strategy: |
+      If the JSON endpoint changes or requires authentication, fall back to
+      scraping the HTML listing pages or use the public search endpoint.
+    required_params:
+      - page: Page number (1-based)
+      - size: Records per page
+      - sort: Sort field, typically "-issueDate" for newest first
+
+  regulatory.nhsa_policy:
+    enabled: true
+    source_name: "National Healthcare Security Administration"
+    source_type: "reimbursement_policy"
+    default_category: "reimbursement_policy"
+    language_encoding: "utf-8"
+    region: "CN"
+    pagination_strategy: "html_page"
+    page_size: 20
+    max_pages: 5
+    date_window_days: 90
+    rate_limit_delay_ms: 400
+    description: |
+      NHSA (国家医疗保障局) policy updates related to healthcare reimbursement,
+      pricing, and insurance coverage.
+    fallback_strategy: |
+      HTML parsing is the primary strategy. Monitor for changes in CSS selectors
+      or page structure. Consider archiving page snapshots for regression tests.
+    required_params: []
+
+  regulatory.nhc_notices:
+    enabled: true
+    source_name: "National Health Commission"
+    source_type: "health_commission_policy"
+    default_category: "health_commission_policy"
+    language_encoding: "utf-8"
+    region: "CN"
+    pagination_strategy: "html_page"
+    page_size: 20
+    max_pages: 5
+    date_window_days: 90
+    rate_limit_delay_ms: 400
+    description: |
+      NHC (国家卫生健康委员会) notices and guidelines on public health policy,
+      medical standards, and regulatory frameworks.
+    fallback_strategy: |
+      HTML parsing is the primary strategy. The site structure changes occasionally.
+      Keep selectors flexible and use multiple fallback patterns.
+    required_params: []
+
+# Global Settings
+settings:
+  default_timeout_seconds: 20
+  retry_attempts: 3
+  retry_backoff_factor: 2
+  user_agent: "Mozilla/5.0 (compatible; IVDMonitor/1.0)"
+  respect_robots_txt: true
+  concurrent_requests_limit: 5
+
+# Category Mappings
+categories:
+  financial_reports:
+    display_name: "Financial Reports"
+    description: "Company financial disclosures and periodic reports"
+  product_approvals:
+    display_name: "Product Approvals"
+    description: "NMPA device approvals and registrations"
+  product_launches:
+    display_name: "Product Launches"
+    description: "New product announcements and launches"
+  reimbursement_policy:
+    display_name: "Reimbursement Policy"
+    description: "Healthcare insurance and reimbursement policy updates"
+  health_commission_policy:
+    display_name: "Health Commission Policy"
+    description: "National Health Commission regulatory notices"

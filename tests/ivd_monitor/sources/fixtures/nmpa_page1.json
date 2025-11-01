@@ -1,0 +1,27 @@
+{
+  "total": 40,
+  "list": [
+    {
+      "id": "202310310001",
+      "productName": "全自动化学发光免疫分析仪",
+      "companyName": "北京华科泰生物技术有限公司",
+      "issueDate": "2023-10-31",
+      "docUrl": "/xxgk/ylqx/202310/P020231031123456789012.pdf",
+      "approvalNumber": "国械注准2023312345",
+      "productType": "体外诊断试剂",
+      "productModel": "HKT-AI 3000",
+      "productCategory": "化学发光分析仪"
+    },
+    {
+      "id": "202310300002",
+      "productName": "新型冠状病毒抗原检测试剂盒",
+      "companyName": "深圳市优迅医学检验实验室有限公司",
+      "issueDate": "2023-10-30",
+      "docUrl": "https://www.nmpa.gov.cn/xxgk/ylqx/202310/P020231030223344556677.pdf",
+      "approvalNumber": "国械注准2023312333",
+      "productType": "体外诊断试剂",
+      "productModel": "UX-AG 50",
+      "productCategory": "免疫层析试剂"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "data": {
+    "data": [
+      {
+        "id": "11223344",
+        "announcementTitle": "深圳迈瑞生物医疗电子股份有限公司关于新产品获批的公告",
+        "secCode": "300760",
+        "secName": "迈瑞医疗",
+        "publishTime": "2023-10-16 09:30:00",
+        "attachPath": "/disclosure/listed/notice/11223344.pdf",
+        "attachSize": "2500000",
+        "announcementTypeName": "其他公告"
+      },
+      {
+        "id": "11223345",
+        "announcementTitle": "深圳新产业生物医学工程股份有限公司第三季度报告",
+        "secCode": "300832",
+        "secName": "新产业",
+        "publishTime": "2023-10-15 16:00:00",
+        "attachPath": "/disclosure/listed/notice/11223345.pdf",
+        "attachSize": "3100000",
+        "announcementTypeName": "定期报告"
+      }
+    ],
+    "totalCount": 100
+  }
+}
