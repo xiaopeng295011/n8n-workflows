@@ -53,3 +53,12 @@ Captures metadata for each ingestion execution (start/end timestamps, total proc
 - Query helpers for retrieving records by day, category, or company, as well as ingestion metric summaries and FTS search
 
 Because this IVD database is standalone, it can be initialised without touching the existing `workflows.db` index. Running the CLI command only affects `database/ivd_monitor.db` unless you override the path explicitly.
+
+## Procurement & Media Sources
+
+Procurement and industry media sources are configured via `config/ivd_sources.json`. Collectors are dynamically registered and can be enabled or disabled without code changes. See [ivd_monitor_scrapers.md](./ivd_monitor_scrapers.md) for detailed configuration guidance, including:
+
+- China Government Procurement Network (CCGP) and provincial portals (Beijing, Shanghai, Guangdong)
+- Industry media feeds (RSS and HTML scraping)
+- Regional tagging (`CN`, `CN-11`, `CN-31`, `CN-44`)
+- Anti-bot mitigation and CAPTCHA considerations
