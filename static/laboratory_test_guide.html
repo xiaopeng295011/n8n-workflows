@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔬 检验项目临床指南集合</title>
+  <meta name="description" content="全面的检验项目临床指南集合，包含血凝、肝功、肾功、血脂、糖代谢、心肌、肿瘤标志物等多个类别的临床检验指南">
+  <style>
+    /* Modern CSS Reset and Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --primary-light: #60a5fa;
+      --secondary: #8b5cf6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --info: #06b6d4;
+      
+      --bg: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-tertiary: #f1f5f9;
+      --bg-card: #ffffff;
+      
+      --text: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      
+      --border: #e2e8f0;
+      --border-light: #f1f5f9;
+      
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      
+      --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-success: linear-gradient(135deg, #0ba360 0%, #3cba92 100%);
+      --gradient-warning: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-info: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-tertiary: #334155;
+      --bg-card: #1e293b;
+      
+      --text: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-muted: #64748b;
+      
+      --border: #475569;
+      --border-light: #334155;
+      
+      --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.3), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 3rem 0 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      opacity: 0.1;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .subtitle {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      margin-bottom: 2rem;
+    }
+
+    .stats {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .stat {
+      text-align: center;
+      min-width: 100px;
+    }
+
+    .stat-number {
+      display: block;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      opacity: 0.9;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+
+    /* Controls */
+    .controls {
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow);
+    }
+
+    .controls-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .search-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .search-wrapper {
+      flex: 1;
+      min-width: 300px;
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 2.75rem;
+      border: 2px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .theme-toggle {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      font-size: 1.25rem;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .filter-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .filter-group select {
+      padding: 0.625rem 2rem 0.625rem 0.75rem;
+      border: 2px solid var(--border);
+      border-radius: 0.5rem;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      appearance: none;
+      background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="%2364748b" d="M6 9L1 4h10z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 0.5rem center;
+    }
+
+    .filter-group select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .results-info {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .clear-filters {
+      background: var(--error);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .clear-filters:hover {
+      background: #dc2626;
+      transform: translateY(-1px);
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    /* Category Cards */
+    .categories-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .category-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+    }
+
+    .category-card:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+
+    .category-card.hidden {
+      display: none;
+    }
+
+    .category-header {
+      background: var(--bg-secondary);
+      padding: 1.25rem 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .category-header:hover {
+      background: var(--bg-tertiary);
+    }
+
+    .category-header-content {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex: 1;
+    }
+
+    .category-icon {
+      font-size: 1.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+    }
+
+    .category-title-section {
+      flex: 1;
+    }
+
+    .category-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .category-count {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .category-toggle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      transition: transform 0.3s ease;
+    }
+
+    .category-card.expanded .category-toggle {
+      transform: rotate(180deg);
+    }
+
+    .category-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .category-card.expanded .category-content {
+      max-height: 5000px;
+    }
+
+    .category-body {
+      padding: 1.5rem;
+    }
+
+    /* Test Items Table */
+    .test-items-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-bottom: 1rem;
+    }
+
+    .test-items-table thead {
+      background: var(--bg-secondary);
+    }
+
+    .test-items-table th {
+      padding: 0.875rem 1rem;
+      text-align: left;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .test-items-table th:first-child {
+      border-top-left-radius: 0.5rem;
+    }
+
+    .test-items-table th:last-child {
+      border-top-right-radius: 0.5rem;
+    }
+
+    .test-items-table tbody tr {
+      transition: all 0.2s ease;
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .test-items-table tbody tr:hover {
+      background: var(--bg-secondary);
+    }
+
+    .test-items-table td {
+      padding: 1rem;
+      vertical-align: top;
+    }
+
+    .test-name {
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .test-badge {
+      display: inline-block;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.375rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      background: var(--primary);
+      color: white;
+    }
+
+    .guides-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .guide-item {
+      padding: 0.75rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .guide-item:hover {
+      background: var(--bg);
+      border-color: var(--primary);
+      transform: translateX(4px);
+      box-shadow: var(--shadow);
+    }
+
+    .guide-item.truncated {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .guide-item.expanded {
+      -webkit-line-clamp: unset;
+    }
+
+    .guide-expand {
+      color: var(--primary);
+      font-weight: 500;
+      margin-top: 0.25rem;
+      display: inline-block;
+      font-size: 0.75rem;
+    }
+
+    .guide-expand:hover {
+      text-decoration: underline;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+    }
+
+    .empty-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text);
+    }
+
+    .empty-description {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-card);
+      border-radius: 1rem;
+      max-width: 800px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: var(--shadow-xl);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: var(--bg-card);
+      z-index: 1;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .modal-close {
+      background: var(--bg-secondary);
+      border: none;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.5rem;
+      font-size: 1.25rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--error);
+      color: white;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .guide-detail {
+      font-size: 0.9375rem;
+      line-height: 1.8;
+      color: var(--text);
+    }
+
+    /* Loading */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .spinner {
+      width: 3rem;
+      height: 3rem;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Print Styles */
+    @media print {
+      .header,
+      .controls,
+      .theme-toggle,
+      .category-toggle,
+      .modal {
+        display: none !important;
+      }
+
+      .category-content {
+        max-height: none !important;
+        display: block !important;
+      }
+
+      .category-card {
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      body {
+        background: white;
+        color: black;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .title {
+        font-size: 1.75rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+      }
+
+      .stats {
+        gap: 1rem;
+      }
+
+      .stat-number {
+        font-size: 1.5rem;
+      }
+
+      .search-wrapper {
+        min-width: 100%;
+      }
+
+      .filter-section {
+        width: 100%;
+      }
+
+      .filter-group {
+        flex: 1;
+      }
+
+      .filter-group select {
+        width: 100%;
+      }
+
+      .test-items-table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .test-items-table thead {
+        display: none;
+      }
+
+      .test-items-table tbody,
+      .test-items-table tr,
+      .test-items-table td {
+        display: block;
+      }
+
+      .test-items-table tr {
+        margin-bottom: 1rem;
+        border: 1px solid var(--border);
+        border-radius: 0.5rem;
+        padding: 1rem;
+      }
+
+      .test-items-table td {
+        padding: 0.5rem 0;
+        border: none;
+      }
+
+      .test-items-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 0.25rem;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+      }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Utility Classes */
+    .hidden {
+      display: none !important;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mb-1 {
+      margin-bottom: 0.5rem;
+    }
+
+    .mb-2 {
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <h1 class="title">🔬 检验项目临床指南集合</h1>
+      <p class="subtitle">全面的临床检验项目指南参考库</p>
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-number" id="total-categories">0</span>
+          <span class="stat-label">检验类别</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" id="total-tests">0</span>
+          <span class="stat-label">检验项目</span>
+        </div>
+        <div class="stat">
+          <span class="stat-number" id="total-guides">0</span>
+          <span class="stat-label">临床指南</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls -->
+  <div class="controls">
+    <div class="controls-content">
+      <div class="search-section">
+        <div class="search-wrapper">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="search-input" 
+            class="search-input" 
+            placeholder="搜索检验项目或指南名称..."
+            autocomplete="off"
+          />
+        </div>
+        <button class="theme-toggle" id="theme-toggle" title="切换主题">
+          <span id="theme-icon">🌙</span>
+        </button>
+      </div>
+      <div class="filter-section">
+        <div class="filter-group">
+          <label for="category-filter">类别筛选：</label>
+          <select id="category-filter">
+            <option value="all">全部类别</option>
+          </select>
+        </div>
+        <div class="results-info">
+          <span id="results-count">显示全部</span>
+        </div>
+        <button class="clear-filters hidden" id="clear-filters">清除筛选</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container">
+    <!-- Loading -->
+    <div class="loading active" id="loading">
+      <div class="spinner"></div>
+      <p>加载数据中...</p>
+    </div>
+
+    <!-- Categories Grid -->
+    <div class="categories-grid" id="categories-grid"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state hidden" id="empty-state">
+      <div class="empty-icon">🔍</div>
+      <h3 class="empty-title">未找到匹配结果</h3>
+      <p class="empty-description">请尝试其他搜索关键词或清除筛选条件</p>
+      <button class="clear-filters" onclick="clearFilters()">清除筛选</button>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-title"></h3>
+        <button class="modal-close" id="modal-close">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="guide-detail" id="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Laboratory Test Data
+    const laboratoryData = {
+      "血凝": {
+        icon: "🩸",
+        tests: {
+          "APTT": [
+            "ISTH活化部分凝血活酶时间测定推荐方法",
+            "2005美国临床实验室标准化协会APTT检测标准",
+            "2008美国临床实验室标准化协会APTT检测标准"
+          ],
+          "PT": [
+            "2015世界卫生组织凝血酶原国际标准化比值监测指南",
+            "ICSH推荐PT检测及ISI测定标准化操作规程",
+            "欧洲心脏病学会口服抗凝药患者血栓栓塞预防与治疗指南"
+          ],
+          "TT": [
+            "国际血栓止血协会凝血时间推荐检测方法"
+          ],
+          "FIB": [
+            "国际血栓止血协会纤维蛋白原测定推荐方法",
+            "2017NACB实验室实践指南：国家凝血试验室指南"
+          ],
+          "DD": [
+            "2018可疑肺栓塞患者D-二聚体测定检验医学最佳实践指南",
+            "2019国际血栓与止血学会D-二聚体检测指南"
+          ],
+          "FDP": [
+            "国际血栓止血协会纤维蛋白降解产物测定指南"
+          ],
+          "DRVVT": [
+            "ISTH狼疮抗凝物实验室检测标准",
+            "英国血液学标准委员会狼疮抗凝物检测指南"
+          ],
+          "PIVKA-Ⅱ": [
+            "PIVKA-Ⅱ在肝癌诊断中的应用指南",
+            "2016日本肝癌临床实践指南"
+          ]
+        }
+      },
+      "肝功": {
+        icon: "🫀",
+        tests: {
+          "ALT": [
+            "2017美国肝病研究学会临床实践指南：慢性乙型肝炎的治疗更新",
+            "2018欧洲肝病学会临床实践指南：慢性乙型肝炎的管理",
+            "WHO谷丙转氨酶检测标准化方案"
+          ],
+          "AST": [
+            "2017美国肝病研究学会临床实践指南：慢性乙型肝炎的治疗更新",
+            "WHO谷草转氨酶检测标准化方案",
+            "国际临床化学与检验医学联盟AST测定标准"
+          ],
+          "ALP": [
+            "IFCC碱性磷酸酶测定标准化方法",
+            "2012美国胃肠病学会肝脏生化异常评估指南"
+          ],
+          "TP": [
+            "IFCC总蛋白测定标准化方法",
+            "临床生化检验常规项目分析质量指标",
+            "2015WHO蛋白质营养不良诊断标准"
+          ],
+          "ALB": [
+            "IFCC白蛋白测定标准化方法",
+            "2015临床营养实践指南：低白蛋白血症的评估与治疗",
+            "2018欧洲临床营养与代谢学会白蛋白检测指南"
+          ],
+          "GGT": [
+            "IFCC γ-谷氨酰转肽酶测定标准化方法",
+            "2017欧洲肝病学会酒精性肝病临床实践指南"
+          ],
+          "TBIL": [
+            "IFCC总胆红素测定标准化方法",
+            "2012美国胃肠病学会肝脏生化异常评估指南",
+            "新生儿高胆红素血症管理指南"
+          ],
+          "DBIL": [
+            "IFCC直接胆红素测定标准化方法",
+            "2012美国胃肠病学会肝脏生化异常评估指南"
+          ],
+          "AFU": [
+            "中国原发性肝癌诊疗规范（2019年版）",
+            "岩藻糖苷酶在肝癌诊断中的应用指南"
+          ],
+          "AMM": [
+            "血氨检测在肝性脑病诊断中的应用指南",
+            "2014美国肝病学会肝性脑病诊疗指南"
+          ],
+          "PA": [
+            "前白蛋白在营养评估中的应用指南",
+            "2016ASPEN临床指南：营养支持治疗"
+          ],
+          "TBA": [
+            "总胆汁酸检测在肝胆疾病中的应用指南",
+            "2017欧洲肝病学会胆汁淤积性肝病诊疗指南"
+          ],
+          "ADA": [
+            "腺苷脱氨酶在结核性疾病诊断中的应用",
+            "WHO结核病诊断标准"
+          ]
+        }
+      },
+      "肾功": {
+        icon: "🫘",
+        tests: {
+          "CREA": [
+            "2012KDIGO慢性肾脏病评估与管理临床实践指南",
+            "IFCC肌酐测定标准化方法",
+            "2017美国肾脏病学会慢性肾脏病筛查指南"
+          ],
+          "UREA": [
+            "2012KDIGO急性肾损伤临床实践指南",
+            "IFCC尿素测定标准化方法"
+          ],
+          "UA": [
+            "2016美国风湿病学会痛风管理指南",
+            "2017欧洲抗风湿病联盟痛风诊疗建议",
+            "IFCC尿酸测定标准化方法"
+          ],
+          "B2MG": [
+            "β2微球蛋白在肾功能评估中的应用",
+            "2015多发性骨髓瘤诊疗指南"
+          ],
+          "UCSFP": [
+            "尿微量白蛋白检测临床应用专家共识",
+            "2021糖尿病肾病防治专家共识"
+          ],
+          "CYSC": [
+            "2012KDIGO慢性肾脏病评估与管理临床实践指南",
+            "胱抑素C在肾功能评估中的应用指南",
+            "2018国际肾脏病学会胱抑素C检测标准"
+          ],
+          "MALB": [
+            "微量白蛋白尿检测与糖尿病肾病早期诊断",
+            "2020美国糖尿病学会糖尿病诊疗标准",
+            "2019ESC/EASD糖尿病、前驱糖尿病与心血管疾病指南"
+          ]
+        }
+      },
+      "血脂": {
+        icon: "💧",
+        tests: {
+          "TG": [
+            "2019ESC/EAS血脂异常管理指南",
+            "2018AHA/ACC胆固醇管理指南",
+            "IFCC甘油三酯测定标准化方法"
+          ],
+          "CHOL": [
+            "2019ESC/EAS血脂异常管理指南",
+            "2018AHA/ACC胆固醇管理指南",
+            "IFCC总胆固醇测定标准化方法",
+            "中国成人血脂异常防治指南（2016年修订版）"
+          ],
+          "HDL": [
+            "2019ESC/EAS血脂异常管理指南",
+            "IFCC高密度脂蛋白胆固醇测定标准化方法"
+          ],
+          "LDL": [
+            "2019ESC/EAS血脂异常管理指南",
+            "2018AHA/ACC胆固醇管理指南",
+            "IFCC低密度脂蛋白胆固醇测定标准化方法",
+            "中国成人血脂异常防治指南（2016年修订版）"
+          ],
+          "APOA": [
+            "载脂蛋白A在心血管风险评估中的应用",
+            "2019ESC/EAS血脂异常管理指南"
+          ],
+          "APOB": [
+            "载脂蛋白B在心血管风险评估中的应用",
+            "2019ESC/EAS血脂异常管理指南",
+            "2018AHA/ACC胆固醇管理指南"
+          ],
+          "LPA": [
+            "脂蛋白(a)与心血管疾病风险评估",
+            "2019ESC/EAS血脂异常管理指南"
+          ],
+          "SD-LDL": [
+            "小而密低密度脂蛋白与动脉粥样硬化",
+            "sd-LDL在心血管疾病风险评估中的应用"
+          ],
+          "LPS": [
+            "脂蛋白相关磷脂酶A2在心血管风险评估中的应用",
+            "2016欧洲心脏病学会心血管疾病预防指南"
+          ],
+          "NEFA": [
+            "游离脂肪酸在代谢综合征中的作用",
+            "非酯化脂肪酸检测临床应用指南"
+          ]
+        }
+      },
+      "糖代谢": {
+        icon: "🍬",
+        tests: {
+          "GLU": [
+            "2020美国糖尿病学会糖尿病诊疗标准",
+            "WHO糖尿病诊断标准（2019年更新）",
+            "IFCC葡萄糖测定标准化方法",
+            "中国2型糖尿病防治指南（2020年版）"
+          ],
+          "HBA1C": [
+            "2020美国糖尿病学会糖尿病诊疗标准",
+            "IFCC糖化血红蛋白测定国际标准",
+            "2018国际糖尿病联盟糖化血红蛋白共识",
+            "中国糖化血红蛋白检测临床应用指南"
+          ],
+          "胰岛素/胰岛素样生长因子": [
+            "胰岛素抵抗评估临床应用指南",
+            "2020美国糖尿病学会糖尿病诊疗标准"
+          ],
+          "C肽": [
+            "C肽在糖尿病分型中的应用",
+            "胰岛功能评估临床指南"
+          ],
+          "胰岛素": [
+            "胰岛素检测在糖尿病诊疗中的应用",
+            "2020美国糖尿病学会糖尿病诊疗标准",
+            "胰岛素抵抗评估临床应用指南"
+          ],
+          "D3H": [
+            "1,5-脱水葡萄糖醇在糖尿病监测中的应用",
+            "新型糖尿病标志物临床应用指南"
+          ]
+        }
+      },
+      "心肌": {
+        icon: "❤️",
+        tests: {
+          "CK": [
+            "肌酸激酶在心肌损伤诊断中的应用",
+            "IFCC肌酸激酶测定标准化方法"
+          ],
+          "CKMB": [
+            "2015ESC急性冠状动脉综合征诊治指南",
+            "NACB心肌标志物临床应用指南"
+          ],
+          "LDH": [
+            "乳酸脱氢酶在心肌损伤诊断中的应用",
+            "IFCC乳酸脱氢酶测定标准化方法"
+          ],
+          "HCY": [
+            "同型半胱氨酸与心血管疾病风险",
+            "2016欧洲心脏病学会心血管疾病预防指南",
+            "同型半胱氨酸检测临床应用专家共识"
+          ],
+          "BNP": [
+            "2016ESC急性和慢性心力衰竭诊治指南",
+            "BNP/NT-proBNP在心力衰竭诊断中的应用",
+            "2017AHA/ACC/HFSA心力衰竭管理指南"
+          ],
+          "NT-proBNP": [
+            "2016ESC急性和慢性心力衰竭诊治指南",
+            "NT-proBNP在心力衰竭诊断与预后评估中的应用",
+            "2017AHA/ACC/HFSA心力衰竭管理指南",
+            "IFCC NT-proBNP检测标准化方法"
+          ],
+          "TnI": [
+            "2020ESC非ST段抬高型急性冠状动脉综合征诊治指南",
+            "高敏肌钙蛋白I检测临床应用指南",
+            "2017第四版心肌梗死全球统一定义",
+            "IFCC心肌肌钙蛋白检测标准"
+          ],
+          "TnT": [
+            "2020ESC非ST段抬高型急性冠状动脉综合征诊治指南",
+            "高敏肌钙蛋白T检测临床应用指南",
+            "2017第四版心肌梗死全球统一定义",
+            "IFCC心肌肌钙蛋白检测标准"
+          ]
+        }
+      },
+      "离子": {
+        icon: "⚡",
+        tests: {
+          "K": [
+            "血钾异常的诊断与处理指南",
+            "2019欧洲心脏病学会高钾血症管理指南",
+            "IFCC钾离子测定标准化方法"
+          ],
+          "NA": [
+            "低钠血症诊断与治疗专家共识",
+            "2014欧洲内分泌学会低钠血症临床实践指南",
+            "IFCC钠离子测定标准化方法"
+          ],
+          "CL": [
+            "氯离子平衡紊乱诊疗指南",
+            "IFCC氯离子测定标准化方法"
+          ],
+          "Fe": [
+            "铁缺乏和缺铁性贫血诊治指南",
+            "2019WHO铁缺乏贫血预防、诊断和治疗策略",
+            "血清铁检测临床应用指南"
+          ]
+        }
+      },
+      "炎症": {
+        icon: "🔥",
+        tests: {
+          "PCT": [
+            "降钙素原在脓毒症诊断中的应用",
+            "2016国际脓毒症与感染性休克管理指南（Sepsis-3）",
+            "降钙素原检测临床应用专家共识"
+          ],
+          "IL-6": [
+            "白介素-6在炎症性疾病中的应用",
+            "2020新冠肺炎诊疗方案：IL-6检测指导",
+            "细胞因子检测临床应用指南"
+          ],
+          "肿瘤坏死因子α": [
+            "TNF-α在炎症与免疫疾病中的作用",
+            "细胞因子检测临床应用指南",
+            "炎症标志物检测与临床应用专家共识"
+          ]
+        }
+      },
+      "特种蛋白": {
+        icon: "🧬",
+        tests: {
+          "CRP": [
+            "C反应蛋白检测临床应用专家共识",
+            "2016欧洲心脏病学会心血管疾病预防指南",
+            "WHO炎症标志物检测指南"
+          ],
+          "IGG": [
+            "免疫球蛋白检测临床应用指南",
+            "原发性免疫缺陷病诊疗指南"
+          ],
+          "IGM": [
+            "免疫球蛋白M在感染性疾病诊断中的应用",
+            "原发性免疫缺陷病诊疗指南"
+          ],
+          "IGA": [
+            "IgA肾病诊断与治疗指南",
+            "免疫球蛋白A检测临床应用"
+          ],
+          "CO2": [
+            "二氧化碳结合力在酸碱平衡评估中的应用",
+            "血气分析临床应用指南"
+          ],
+          "TRF": [
+            "转铁蛋白在贫血诊断中的应用",
+            "铁代谢评估临床指南"
+          ]
+        }
+      },
+      "甲功": {
+        icon: "🦋",
+        tests: {
+          "FT3": [
+            "2016美国甲状腺学会甲状腺功能减退症诊疗指南",
+            "2015欧洲甲状腺学会甲状腺功能亢进症诊疗指南",
+            "甲状腺功能检测临床应用指南"
+          ],
+          "FT4": [
+            "2016美国甲状腺学会甲状腺功能减退症诊疗指南",
+            "2015欧洲甲状腺学会甲状腺功能亢进症诊疗指南",
+            "甲状腺功能检测临床应用指南"
+          ],
+          "TT3": [
+            "总三碘甲状腺原氨酸检测临床应用",
+            "甲状腺功能评估指南"
+          ],
+          "TT4": [
+            "总甲状腺素检测临床应用",
+            "甲状腺功能评估指南"
+          ],
+          "TSH": [
+            "2016美国甲状腺学会甲状腺功能减退症诊疗指南",
+            "促甲状腺激素检测临床应用专家共识",
+            "2015欧洲甲状腺学会甲状腺功能亢进症诊疗指南",
+            "IFCC促甲状腺激素测定标准化方法"
+          ]
+        }
+      },
+      "乙肝三系": {
+        icon: "🦠",
+        tests: {
+          "HBsAg": [
+            "2018WHO乙型肝炎诊断检测指南",
+            "2018欧洲肝病学会慢性乙型肝炎管理指南",
+            "中国慢性乙型肝炎防治指南（2019年版）"
+          ],
+          "HBsAb": [
+            "乙型肝炎疫苗接种技术指南",
+            "乙肝表面抗体检测与免疫评估"
+          ],
+          "HBeAg": [
+            "2018欧洲肝病学会慢性乙型肝炎管理指南",
+            "中国慢性乙型肝炎防治指南（2019年版）"
+          ],
+          "HBeAb": [
+            "乙肝e抗体在疾病转归中的意义",
+            "慢性乙型肝炎血清学标志物临床应用"
+          ],
+          "HBcAb": [
+            "乙肝核心抗体检测临床意义",
+            "慢性乙型肝炎血清学标志物临床应用"
+          ]
+        }
+      },
+      "肿瘤标志物-消化系统": {
+        icon: "🎗️",
+        tests: {
+          "AFP（肝癌）": [
+            "中国原发性肝癌诊疗规范（2019年版）",
+            "2018ASCO肝细胞癌临床实践指南",
+            "甲胎蛋白检测临床应用专家共识"
+          ],
+          "CA19-9（胰腺癌）": [
+            "2020NCCN胰腺癌临床实践指南",
+            "CA19-9在胰腺癌诊疗中的应用",
+            "消化道肿瘤标志物临床应用指南"
+          ],
+          "CA72-4（胃癌）": [
+            "中国胃癌诊疗规范（2018年版）",
+            "CA72-4在胃癌诊断中的应用"
+          ],
+          "CEA（结直肠癌）": [
+            "2020NCCN结直肠癌临床实践指南",
+            "癌胚抗原检测临床应用专家共识",
+            "2017ESMO结直肠癌诊疗指南"
+          ]
+        }
+      },
+      "肿瘤标志物-呼吸系统": {
+        icon: "🫁",
+        tests: {
+          "CYFRA21-1（肺癌）": [
+            "2020NCCN非小细胞肺癌临床实践指南",
+            "细胞角蛋白19片段在肺癌诊断中的应用"
+          ],
+          "NSE（小细胞肺癌）": [
+            "2020NCCN小细胞肺癌临床实践指南",
+            "神经元特异性烯醇化酶检测临床应用"
+          ],
+          "SCC（鳞状细胞癌抗原）": [
+            "鳞状细胞癌抗原在肺癌诊断中的应用",
+            "肺癌肿瘤标志物临床应用指南"
+          ]
+        }
+      },
+      "肿瘤标志物-内分泌系统": {
+        icon: "🦋",
+        tests: {
+          "Tg（甲状腺癌）": [
+            "2015美国甲状腺学会甲状腺癌诊疗指南",
+            "甲状腺球蛋白检测临床应用专家共识"
+          ],
+          "CT（甲状腺髓样癌）": [
+            "降钙素在甲状腺髓样癌诊疗中的应用",
+            "2015美国甲状腺学会甲状腺癌诊疗指南"
+          ]
+        }
+      },
+      "肿瘤标志物-妇科": {
+        icon: "💗",
+        tests: {
+          "CA125（卵巢癌）": [
+            "2020NCCN卵巢癌临床实践指南",
+            "CA125在卵巢癌诊疗中的应用",
+            "2019ESMO卵巢癌诊疗指南"
+          ],
+          "HE4（卵巢癌）": [
+            "人附睾蛋白4在卵巢癌诊断中的应用",
+            "2020NCCN卵巢癌临床实践指南"
+          ],
+          "CA15-3（乳腺癌）": [
+            "2021NCCN乳腺癌临床实践指南",
+            "CA15-3在乳腺癌监测中的应用"
+          ],
+          "SCC（宫颈癌）": [
+            "中国宫颈癌诊疗规范（2018年版）",
+            "鳞状细胞癌抗原在宫颈癌诊断中的应用"
+          ],
+          "SCC（阴道癌）": [
+            "中国阴道癌综合治疗专家共识（2020年版）",
+            "鳞状细胞癌抗原在妇科肿瘤诊断中的应用"
+          ]
+        }
+      },
+      "肿瘤标志物-泌尿生殖系统": {
+        icon: "🔵",
+        tests: {
+          "PSA（前列腺癌）": [
+            "2020NCCN前列腺癌临床实践指南",
+            "前列腺特异性抗原检测临床应用指南",
+            "2019欧洲泌尿外科学会前列腺癌诊疗指南"
+          ],
+          "fPSA（游离PSA）": [
+            "游离前列腺特异性抗原在前列腺癌诊断中的应用",
+            "PSA及其相关指标临床应用专家共识"
+          ]
+        }
+      },
+      "继发性高血压相关": {
+        icon: "🩺",
+        tests: {
+          "肾素": [
+            "原发性醛固酮增多症诊治指南",
+            "2016美国内分泌学会原发性醛固酮增多症诊疗指南"
+          ],
+          "血管紧张素": [
+            "肾素-血管紧张素-醛固酮系统检测临床应用",
+            "继发性高血压诊断流程指南"
+          ],
+          "醛固酮": [
+            "原发性醛固酮增多症诊治指南",
+            "2016美国内分泌学会原发性醛固酮增多症诊疗指南",
+            "继发性高血压实验室检查专家共识"
+          ],
+          "皮质醇": [
+            "库欣综合征诊疗指南",
+            "2015美国内分泌学会库欣综合征诊治指南"
+          ],
+          "儿茶酚胺": [
+            "嗜铬细胞瘤和副神经节瘤诊疗指南",
+            "2014美国内分泌学会嗜铬细胞瘤诊疗指南"
+          ]
+        }
+      },
+      "其他重要项目": {
+        icon: "📋",
+        tests: {
+          "VEGF（血管内皮生长因子）": [
+            "血管内皮生长因子在肿瘤血管生成中的作用",
+            "VEGF检测临床应用指南"
+          ],
+          "铁蛋白": [
+            "铁蛋白在铁代谢评估中的应用",
+            "2019WHO铁缺乏贫血预防、诊断和治疗策略"
+          ],
+          "EPO（促红细胞生成素）": [
+            "促红细胞生成素在贫血诊疗中的应用",
+            "慢性肾脏病贫血诊治指南"
+          ],
+          "叶酸": [
+            "叶酸缺乏性贫血诊疗指南",
+            "2019WHO叶酸补充预防神经管缺陷指南"
+          ],
+          "VB12（维生素B12）": [
+            "维生素B12缺乏诊断与治疗指南",
+            "巨幼细胞性贫血诊疗规范"
+          ],
+          "ACTH（促肾上腺皮质激素）": [
+            "库欣综合征诊疗指南",
+            "2015美国内分泌学会库欣综合征诊治指南",
+            "肾上腺皮质功能评估临床指南"
+          ],
+          "GH（生长激素）": [
+            "生长激素缺乏症诊疗指南",
+            "2016美国内分泌学会生长激素缺乏诊疗指南"
+          ],
+          "IGF-1（胰岛素样生长因子）": [
+            "IGF-1在生长发育评估中的应用",
+            "肢端肥大症诊疗指南"
+          ]
+        }
+      },
+      "分子检测": {
+        icon: "🧬",
+        tests: {
+          "HPV检测": [
+            "WHO HPV检测用于宫颈癌筛查指南",
+            "2019中国宫颈癌筛查指南",
+            "2020美国癌症学会宫颈癌筛查指南",
+            "HPV核酸检测临床应用专家共识"
+          ],
+          "EGFR基因突变检测": [
+            "2020NCCN非小细胞肺癌临床实践指南",
+            "2018CSCO非小细胞肺癌诊疗指南：EGFR检测",
+            "表皮生长因子受体基因突变检测临床应用专家共识"
+          ],
+          "KRAS基因检测": [
+            "KRAS基因检测在结直肠癌中的应用",
+            "2020NCCN结直肠癌临床实践指南"
+          ],
+          "BRAF基因检测": [
+            "BRAF基因突变检测临床应用",
+            "2020NCCN黑色素瘤临床实践指南"
+          ]
+        }
+      },
+      "病原学检测": {
+        icon: "🦠",
+        tests: {
+          "涂片镜检": [
+            "WHO结核病实验室诊断指南",
+            "临床微生物检验标准操作规程",
+            "革兰染色操作与判读标准"
+          ],
+          "培养和药敏": [
+            "2020CLSI抗菌药物敏感性试验执行标准",
+            "WHO抗菌药物敏感性监测全球标准",
+            "临床微生物培养操作规范"
+          ],
+          "病原体抗原检测": [
+            "病原体抗原快速检测临床应用指南",
+            "2020感染性疾病快速诊断技术应用专家共识"
+          ],
+          "病原体抗体检测": [
+            "感染性疾病血清学诊断指南",
+            "病原体特异性抗体检测临床应用"
+          ],
+          "核酸检测": [
+            "2020WHO分子诊断检测实验室质量管理指南",
+            "病原体核酸检测临床应用专家共识",
+            "PCR技术临床应用规范"
+          ]
+        }
+      }
+    };
+
+    // Application State
+    let currentTheme = localStorage.getItem('theme') || 'light';
+    let searchQuery = '';
+    let selectedCategory = 'all';
+    let expandedCategories = new Set();
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeTheme();
+      initializeCategoryFilter();
+      renderCategories();
+      updateStats();
+      attachEventListeners();
+      setTimeout(() => {
+        document.getElementById('loading').classList.remove('active');
+      }, 500);
+    });
+
+    // Theme Management
+    function initializeTheme() {
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      updateThemeIcon();
+    }
+
+    function toggleTheme() {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      localStorage.setItem('theme', currentTheme);
+      updateThemeIcon();
+    }
+
+    function updateThemeIcon() {
+      document.getElementById('theme-icon').textContent = currentTheme === 'light' ? '🌙' : '☀️';
+    }
+
+    // Category Filter
+    function initializeCategoryFilter() {
+      const select = document.getElementById('category-filter');
+      Object.keys(laboratoryData).forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        select.appendChild(option);
+      });
+    }
+
+    // Render Categories
+    function renderCategories() {
+      const grid = document.getElementById('categories-grid');
+      grid.innerHTML = '';
+
+      let visibleCount = 0;
+      let totalTests = 0;
+      let totalGuides = 0;
+
+      Object.entries(laboratoryData).forEach(([categoryName, categoryData]) => {
+        if (selectedCategory !== 'all' && selectedCategory !== categoryName) {
+          return;
+        }
+
+        const filteredTests = filterTests(categoryData.tests);
+        if (Object.keys(filteredTests).length === 0) {
+          return;
+        }
+
+        const card = createCategoryCard(categoryName, categoryData.icon, filteredTests);
+        grid.appendChild(card);
+        visibleCount++;
+
+        totalTests += Object.keys(filteredTests).length;
+        Object.values(filteredTests).forEach(guides => {
+          totalGuides += guides.length;
+        });
+      });
+
+      updateResultsInfo(visibleCount, totalTests, totalGuides);
+      toggleEmptyState(visibleCount === 0);
+    }
+
+    function filterTests(tests) {
+      if (!searchQuery) return tests;
+
+      const filtered = {};
+      const query = searchQuery.toLowerCase();
+
+      Object.entries(tests).forEach(([testName, guides]) => {
+        const testMatches = testName.toLowerCase().includes(query);
+        const guideMatches = guides.some(guide => guide.toLowerCase().includes(query));
+
+        if (testMatches || guideMatches) {
+          filtered[testName] = guides;
+        }
+      });
+
+      return filtered;
+    }
+
+    function createCategoryCard(categoryName, icon, tests) {
+      const card = document.createElement('div');
+      card.className = `category-card ${expandedCategories.has(categoryName) ? 'expanded' : ''}`;
+      card.id = `category-${categoryName}`;
+
+      const testCount = Object.keys(tests).length;
+      let guideCount = 0;
+      Object.values(tests).forEach(guides => {
+        guideCount += guides.length;
+      });
+
+      card.innerHTML = `
+        <div class="category-header" onclick="toggleCategory('${categoryName}')">
+          <div class="category-header-content">
+            <div class="category-icon">${icon}</div>
+            <div class="category-title-section">
+              <div class="category-title">${categoryName}</div>
+              <div class="category-count">${testCount} 个检验项目 • ${guideCount} 条指南</div>
+            </div>
+          </div>
+          <span class="category-toggle">▼</span>
+        </div>
+        <div class="category-content">
+          <div class="category-body">
+            ${createTestsTable(tests, categoryName)}
+          </div>
+        </div>
+      `;
+
+      return card;
+    }
+
+    function createTestsTable(tests, categoryName) {
+      let html = '<table class="test-items-table"><thead><tr>';
+      html += '<th style="width: 25%;">检验项目</th>';
+      html += '<th>临床指南</th>';
+      html += '</tr></thead><tbody>';
+
+      Object.entries(tests).forEach(([testName, guides]) => {
+        const encodedTest = encodeURIComponent(testName);
+        html += '<tr>';
+        html += `<td data-label="检验项目"><div class="test-name"><span class="test-badge">${escapeHtml(categoryName)}</span>${escapeHtml(testName)}</div></td>`;
+        html += '<td data-label="临床指南"><div class="guides-list">';
+
+        guides.forEach((guide) => {
+          const shouldTruncate = guide.length > 80;
+          const encodedGuide = encodeURIComponent(guide);
+          html += `<div class="guide-item ${shouldTruncate ? 'truncated' : ''}" data-test="${encodedTest}" data-guide="${encodedGuide}" title="${escapeHtml(guide)}">`;
+          html += escapeHtml(guide);
+          html += '</div>';
+        });
+
+        html += '</div></td>';
+        html += '</tr>';
+      });
+
+      html += '</tbody></table>';
+      return html;
+    }
+
+    function toggleCategory(categoryName) {
+      const card = document.getElementById(`category-${categoryName}`);
+      if (expandedCategories.has(categoryName)) {
+        expandedCategories.delete(categoryName);
+        card.classList.remove('expanded');
+      } else {
+        expandedCategories.add(categoryName);
+        card.classList.add('expanded');
+      }
+    }
+
+    function expandAllCategories() {
+      Object.keys(laboratoryData).forEach(categoryName => {
+        const card = document.getElementById(`category-${categoryName}`);
+        if (card) {
+          expandedCategories.add(categoryName);
+          card.classList.add('expanded');
+        }
+      });
+    }
+
+    function collapseAllCategories() {
+      expandedCategories.clear();
+      document.querySelectorAll('.category-card').forEach(card => {
+        card.classList.remove('expanded');
+      });
+    }
+
+    // Modal
+    function showGuideDetail(testName, guideText) {
+      const modal = document.getElementById('modal');
+      const modalTitle = document.getElementById('modal-title');
+      const modalBody = document.getElementById('modal-body');
+
+      modalTitle.textContent = testName;
+      modalBody.innerHTML = '';
+
+      const paragraph = document.createElement('p');
+      paragraph.textContent = guideText;
+      modalBody.appendChild(paragraph);
+
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('modal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Search and Filter
+    function handleSearch(event) {
+      searchQuery = event.target.value.trim();
+      updateClearButton();
+      renderCategories();
+    }
+
+    function handleCategoryFilter(event) {
+      selectedCategory = event.target.value;
+      updateClearButton();
+      renderCategories();
+    }
+
+    function clearFilters() {
+      searchQuery = '';
+      selectedCategory = 'all';
+      document.getElementById('search-input').value = '';
+      document.getElementById('category-filter').value = 'all';
+      updateClearButton();
+      renderCategories();
+    }
+
+    function updateClearButton() {
+      const clearBtn = document.getElementById('clear-filters');
+      if (searchQuery || selectedCategory !== 'all') {
+        clearBtn.classList.remove('hidden');
+      } else {
+        clearBtn.classList.add('hidden');
+      }
+    }
+
+    // Stats
+    function updateStats() {
+      const totalCategories = Object.keys(laboratoryData).length;
+      let totalTests = 0;
+      let totalGuides = 0;
+
+      Object.values(laboratoryData).forEach(categoryData => {
+        totalTests += Object.keys(categoryData.tests).length;
+        Object.values(categoryData.tests).forEach(guides => {
+          totalGuides += guides.length;
+        });
+      });
+
+      document.getElementById('total-categories').textContent = totalCategories;
+      document.getElementById('total-tests').textContent = totalTests;
+      document.getElementById('total-guides').textContent = totalGuides;
+    }
+
+    function updateResultsInfo(categories, tests, guides) {
+      const resultsCount = document.getElementById('results-count');
+      if (searchQuery || selectedCategory !== 'all') {
+        resultsCount.textContent = `显示 ${categories} 个类别, ${tests} 个项目, ${guides} 条指南`;
+      } else {
+        resultsCount.textContent = '显示全部';
+      }
+    }
+
+    function toggleEmptyState(show) {
+      const emptyState = document.getElementById('empty-state');
+      const grid = document.getElementById('categories-grid');
+      
+      if (show) {
+        emptyState.classList.remove('hidden');
+        grid.classList.add('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        grid.classList.remove('hidden');
+      }
+    }
+
+    // Event Listeners
+    function attachEventListeners() {
+      document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+      document.getElementById('search-input').addEventListener('input', handleSearch);
+      document.getElementById('category-filter').addEventListener('change', handleCategoryFilter);
+      document.getElementById('clear-filters').addEventListener('click', clearFilters);
+      document.getElementById('modal-close').addEventListener('click', closeModal);
+      document.getElementById('modal').addEventListener('click', (e) => {
+        if (e.target.id === 'modal') closeModal();
+      });
+
+      // Event delegation for guide items
+      document.getElementById('categories-grid').addEventListener('click', (e) => {
+        const guideItem = e.target.closest('.guide-item');
+        if (guideItem) {
+          const testName = decodeURIComponent(guideItem.dataset.test);
+          const guideText = decodeURIComponent(guideItem.dataset.guide);
+          showGuideDetail(testName, guideText);
+        }
+      });
+
+      // Keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+        if (e.key === '/' && e.target.tagName !== 'INPUT') {
+          e.preventDefault();
+          document.getElementById('search-input').focus();
+        }
+      });
+    }
+
+    // Utility Functions
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Export for global access
+    window.toggleCategory = toggleCategory;
+    window.showGuideDetail = showGuideDetail;
+    window.closeModal = closeModal;
+    window.clearFilters = clearFilters;
+  </script>
+</body>
+</html>
