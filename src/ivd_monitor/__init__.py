@@ -7,6 +7,8 @@ __all__ = [
     "IVDDatabase",
     "CompanyMatcher",
     "CategoryClassifier",
+    "EmailDigestBuilder",
+    "DigestConfig",
     "enrich_record_with_companies",
     "enrich_record_with_category",
     "enrich_records",
@@ -22,6 +24,9 @@ def __getattr__(name: str) -> Any:
         return getattr(module, name)
     elif name in ("CategoryClassifier", "enrich_record_with_category", "enrich_records"):
         module = import_module("src.ivd_monitor.categorization")
+        return getattr(module, name)
+    elif name in ("EmailDigestBuilder", "DigestConfig"):
+        module = import_module("src.ivd_monitor.email_builder")
         return getattr(module, name)
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
