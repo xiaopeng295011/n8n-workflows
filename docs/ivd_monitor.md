@@ -53,3 +53,12 @@ Captures metadata for each ingestion execution (start/end timestamps, total proc
 - Query helpers for retrieving records by day, category, or company, as well as ingestion metric summaries and FTS search
 
 Because this IVD database is standalone, it can be initialised without touching the existing `workflows.db` index. Running the CLI command only affects `database/ivd_monitor.db` unless you override the path explicitly.
+
+## Enrichment pipeline
+
+Records should be enriched with company matches and digest categories before they are persisted. See [`docs/ivd_company_matching.md`](./ivd_company_matching.md) for detailed guidance on:
+
+- Maintaining the IVD company dataset (`config/ivd_companies.json`)
+- Configuring the `CompanyMatcher` heuristics and overrides
+- Updating categorisation rules handled by `CategoryClassifier`
+- Running the enrichment-specific test suites
