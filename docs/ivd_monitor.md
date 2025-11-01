@@ -53,3 +53,15 @@ Captures metadata for each ingestion execution (start/end timestamps, total proc
 - Query helpers for retrieving records by day, category, or company, as well as ingestion metric summaries and FTS search
 
 Because this IVD database is standalone, it can be initialised without touching the existing `workflows.db` index. Running the CLI command only affects `database/ivd_monitor.db` unless you override the path explicitly.
+
+## Registering new collectors
+
+The scraper core provides a reusable framework for ingesting regulatory sources. To add a new collector:
+
+1. Create a subclass of `src.ivd_monitor.collector.BaseCollector` (or `SyncCollector` if third-party libraries are synchronous).
+2. Implement the `_collect_records(self, stats)` method to return a list of `RawRecord` instances. Use `self.normalize_date(value)` for publish dates and `self.fetch_url(url, stats=stats)` for HTTP requests with retry/backoff configured by `CollectorConfig`.
+3. Define a `CollectorConfig` with appropriate name, timeout, retry, and header overrides and pass it to the collector constructor. Custom metadata can be included for logging and auditing.
+4. Register the collector with `CollectorManager`, either programmatically or via dependency injection in the ingestion runner: `manager.register(MyCollector(config))`.
+5. Run the manager with `await manager.collect_all()` to execute all registered collectors concurrently. The manager returns a `CollectorManagerResult` containing merged records, per-collector stats, and error summaries for logging and the ingestion audit table.
+
+All collector logs are routed through the `ivd_monitor` logger and written to `logs/ivd_monitor.log`. Ensure `src.ivd_monitor.logging_config.setup_logging()` is called during application startup to initialise structured logging before running collectors.
