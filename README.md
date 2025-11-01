@@ -58,6 +58,47 @@ http://localhost:8000
 | **Memory Usage** | ~2GB RAM | <50MB RAM | **40x less** |
 | **Mobile Support** | Poor | Excellent | **Fully responsive** |
 
+
+## 🧪 IVD Monitoring System
+
+This repository now includes an opinionated In Vitro Diagnostics (IVD) monitoring pipeline that orchestrates end-to-end data collection, enrichment, persistence, and digest delivery for healthcare intelligence automation.
+
+### Components
+
+- **`src/ivd_monitor/runner.py`**: Orchestrates the full pipeline with collector management, company/category enrichment, database persistence, audit logging, and email digest generation. Supports CLI flags for dry runs, custom date ranges, and multiple output formats.
+- **`workflows/IVD/IVD_Daily_Digest.json`**: n8n workflow that schedules daily execution at 18:00 UTC, triggers the runner, retrieves generated HTML/plaintext digests, and dispatches emails with automatic error notifications to Slack and email.
+- **[`docs/ivd-monitor-setup.md`](docs/ivd-monitor-setup.md)**: Comprehensive deployment guide covering environment variables, bare metal and Docker setup, n8n credential configuration, operational monitoring, and log rotation guidance.
+
+### Quick Start
+
+```bash
+# Initialize the IVD database
+python -m src.ivd_monitor.database --init
+
+# Run the pipeline locally (dry run for testing)
+python -m src.ivd_monitor.runner --dry-run --output ./digest-output --formats html text --verbose
+
+# Run with actual data persistence
+python -m src.ivd_monitor.runner --output ./digest-output --formats html text --json
+
+# Import the n8n workflow from workflows/IVD/IVD_Daily_Digest.json
+# Configure credentials and environment variables in n8n
+# Activate for daily 18:00 UTC execution
+```
+
+### Features
+
+- ✅ **Per-source failure tracking** with continued execution on partial failures
+- ✅ **Structured logging** with JSON summary output for automation integration
+- ✅ **Company matching** against IVD industry players (迈瑞医疗, 安图生物, etc.)
+- ✅ **Category classification** (financial reports, product launches, policy updates, etc.)
+- ✅ **Audit trail** with ingestion_runs table tracking success/failure metrics
+- ✅ **Email digest** in HTML and plaintext with UTF-8 Chinese character support
+- ✅ **Error notifications** via email and Slack when pipeline encounters issues
+
+
+
+
 ---
 
 ## 📂 Repository Organization
@@ -130,7 +171,7 @@ You can help expand the categorization by adding more service-to-category mappin
 Many workflow JSON files are conveniently named with the service name, often separated by underscores (_).
 
 
----
+
 
 ## 🛠 Usage Instructions
 
@@ -176,7 +217,7 @@ python import_workflows.py
 # 4. Update credentials/webhook URLs before running
 ```
 
----
+
 
 ## 📊 Workflow Statistics
 
@@ -206,7 +247,7 @@ Top services by usage frequency:
 - **AI/ML**: OpenAI, Anthropic, Hugging Face
 - **Development**: HTTP Request, Webhook, GraphQL
 
----
+
 
 ## 🔍 Advanced Search Features
 
@@ -248,7 +289,7 @@ curl "http://localhost:8000/api/stats"
 curl "http://localhost:8000/api/categories"
 ```
 
----
+
 
 ## 🏗 Technical Architecture
 
@@ -289,7 +330,7 @@ CREATE VIRTUAL TABLE workflows_fts USING fts5(
 );
 ```
 
----
+
 
 ## 🔧 Setup & Requirements
 
@@ -331,7 +372,7 @@ python api_server.py --reload
 python workflow_db.py --index --force
 ```
 
----
+
 
 ## 📋 Naming Convention
 
@@ -357,7 +398,7 @@ Our system automatically converts technical filenames to user-friendly names:
 - **automation** → Automation
 - **scheduled** → Scheduled
 
----
+
 
 ## 🚀 API Documentation
 
@@ -393,7 +434,7 @@ Our system automatically converts technical filenames to user-friendly names:
 }
 ```
 
----
+
 
 ## 🤝 Contributing
 
@@ -430,7 +471,7 @@ python run.py --reindex
 python scripts/generate_search_index.py
 ```
 
----
+
 
 ## ⚠️ Important Notes
 
@@ -446,7 +487,7 @@ python scripts/generate_search_index.py
 - **API Changes** - External services may have updated their APIs since creation
 - **Dependencies** - Verify required integrations before importing
 
----
+
 
 ## 📚 Resources & References
 
@@ -464,7 +505,7 @@ This comprehensive collection includes workflows from:
 - [Workflow Templates](https://n8n.io/workflows/) - Official template library
 - [Integration Docs](https://docs.n8n.io/integrations/) - Service-specific guides
 
----
+
 
 ## 🏆 Project Achievements
 
@@ -489,13 +530,13 @@ This comprehensive collection includes workflows from:
 - **Comprehensive logging** for debugging and monitoring
 - **Production-ready** with proper middleware and security
 
----
+
 
 *This repository represents the most comprehensive and well-organized collection of n8n workflows available, featuring cutting-edge search technology and professional documentation that makes workflow discovery and usage a delightful experience.*
 
 **🎯 Perfect for**: Developers, automation engineers, business analysts, and anyone looking to streamline their workflows with proven n8n automations.
 
----
+
 
 [中文](./README_ZH.md)
 
