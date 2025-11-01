@@ -42,6 +42,7 @@ Thumbs.db
 
 # Application specific
 database/workflows.db
+database/ivd_monitor.db
 database/workflows.db-*
 *.log
 
