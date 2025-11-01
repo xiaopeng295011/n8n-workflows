@@ -13,9 +13,34 @@ import sqlite3
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional, Sequence, Union
+from typing import TYPE_CHECKING, Any, Dict, Iterable, List, Optional, Sequence, Union
 
 ISO_TIMESTAMP_SUFFIX = "Z"
+
+if TYPE_CHECKING:
+    from .categorization import CategoryClassifier
+    from .company_matching import CompanyMatcher
+
+_COMPANY_MATCHER: Optional["CompanyMatcher"] = None
+_CATEGORY_CLASSIFIER: Optional["CategoryClassifier"] = None
+
+
+def _get_company_matcher() -> "CompanyMatcher":
+    global _COMPANY_MATCHER
+    if _COMPANY_MATCHER is None:
+        from .company_matching import CompanyMatcher
+
+        _COMPANY_MATCHER = CompanyMatcher()
+    return _COMPANY_MATCHER
+
+
+def _get_category_classifier() -> "CategoryClassifier":
+    global _CATEGORY_CLASSIFIER
+    if _CATEGORY_CLASSIFIER is None:
+        from .categorization import CategoryClassifier
+
+        _CATEGORY_CLASSIFIER = CategoryClassifier()
+    return _CATEGORY_CLASSIFIER
 
 
 def _utc_now() -> str:
@@ -219,6 +244,51 @@ class IVDDatabase:
     # ------------------------------------------------------------------
     # Record ingestion
     # ------------------------------------------------------------------
+    def _enrich_record_fields(
+        self,
+        *,
+        source: str,
+        url: str,
+        title: Optional[str],
+        summary: Optional[str],
+        content_html: Optional[str],
+        category: Optional[str],
+        companies: Optional[Sequence[str]],
+        metadata: Optional[Dict[str, Any]],
+    ) -> tuple[List[str], str]:
+        """Return canonical companies and category for the supplied record data."""
+        matcher = _get_company_matcher()
+        classifier = _get_category_classifier()
+
+        metadata_dict: Dict[str, Any]
+        if isinstance(metadata, dict):
+            metadata_dict = metadata
+        else:
+            metadata_dict = {}
+
+        if companies:
+            canonical_companies = matcher.normalize_names(list(companies))
+        else:
+            canonical_companies = matcher.match_companies(
+                content_html,
+                title=title,
+                summary=summary,
+                metadata=metadata_dict,
+            )
+
+        normalized_category = classifier.normalize_category_name(category)
+        if not normalized_category:
+            normalized_category = classifier.categorize(
+                source=source,
+                title=title,
+                summary=summary,
+                content=content_html,
+                url=url,
+                metadata=metadata_dict,
+            )
+
+        return canonical_companies, normalized_category
+
     def insert_record(
         self,
         *,
@@ -240,6 +310,19 @@ class IVDDatabase:
             raise ValueError("url is required")
         if not source:
             raise ValueError("source is required")
+
+        canonical_companies, normalized_category = self._enrich_record_fields(
+            source=source,
+            url=url,
+            title=title,
+            summary=summary,
+            content_html=content_html,
+            category=category,
+            companies=companies,
+            metadata=metadata,
+        )
+        companies = canonical_companies
+        category = normalized_category
 
         url_hash = _hash_text(_normalise_url(url))
         content_components = [title or "", summary or "", content_html or ""]

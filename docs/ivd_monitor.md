@@ -54,14 +54,31 @@ Captures metadata for each ingestion execution (start/end timestamps, total proc
 
 Because this IVD database is standalone, it can be initialised without touching the existing `workflows.db` index. Running the CLI command only affects `database/ivd_monitor.db` unless you override the path explicitly.
 
-## Registering new collectors
+## Enrichment pipeline
 
-The scraper core provides a reusable framework for ingesting regulatory sources. To add a new collector:
+Records should be enriched with company matches and digest categories before they are persisted. See [`docs/ivd_company_matching.md`](./ivd_company_matching.md) for detailed guidance on:
 
-1. Create a subclass of `src.ivd_monitor.collector.BaseCollector` (or `SyncCollector` if third-party libraries are synchronous).
-2. Implement the `_collect_records(self, stats)` method to return a list of `RawRecord` instances. Use `self.normalize_date(value)` for publish dates and `self.fetch_url(url, stats=stats)` for HTTP requests with retry/backoff configured by `CollectorConfig`.
-3. Define a `CollectorConfig` with appropriate name, timeout, retry, and header overrides and pass it to the collector constructor. Custom metadata can be included for logging and auditing.
-4. Register the collector with `CollectorManager`, either programmatically or via dependency injection in the ingestion runner: `manager.register(MyCollector(config))`.
-5. Run the manager with `await manager.collect_all()` to execute all registered collectors concurrently. The manager returns a `CollectorManagerResult` containing merged records, per-collector stats, and error summaries for logging and the ingestion audit table.
+- Maintaining the IVD company dataset (`config/ivd_companies.json`)
+- Configuring the `CompanyMatcher` heuristics and overrides
+- Updating categorisation rules handled by `CategoryClassifier`
+- Running the enrichment-specific test suites
 
-All collector logs are routed through the `ivd_monitor` logger and written to `logs/ivd_monitor.log`. Ensure `src.ivd_monitor.logging_config.setup_logging()` is called during application startup to initialise structured logging before running collectors.
+## Email digest preview
+
+The daily digest email is generated with reusable Jinja2 templates located in `templates/ivd`. To preview the HTML, plaintext, or CSV output locally without sending an email, use the helper CLI:
+
+```bash
+python -m src.ivd_monitor.email_builder --date 2024-01-15 --format html --output digest.html
+python -m src.ivd_monitor.email_builder --date 2024-01-15 --format text
+python -m src.ivd_monitor.email_builder --date 2024-01-15 --format csv --output digest.csv
+```
+
+The preview command reads configuration from environment variables when available (see `.env.ivd.example` for a starting point):
+
+- `IVD_DIGEST_SUBJECT_FORMAT` — subject template with `{date}` placeholder
+- `IVD_DIGEST_INTRO_TEXT` — introductory paragraph displayed at the top of the digest
+- `IVD_DIGEST_RECIPIENTS` — comma-separated default recipient list for downstream transport
+
+### Email client compatibility
+
+The HTML template renders with inline CSS optimised for common desktop and mobile clients (Outlook, Apple Mail, Gmail). Layout uses table-based sections, conservative typography, and UTF-8 encoding so that Simplified Chinese characters render correctly. When embedding the output in your email transport, ensure the message is sent as multipart/alternative (HTML + plaintext) to preserve accessibility and fallback behaviour.

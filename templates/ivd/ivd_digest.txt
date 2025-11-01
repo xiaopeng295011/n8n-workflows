@@ -1,0 +1,31 @@
+IVD Monitor Daily Digest - {{ digest_date }}
+==========================================
+
+{{ intro_text }}
+
+Summary
+-------
+Total Records : {{ total_count }}
+Categories    : {{ category_count }}
+Companies     : {{ company_count }}{% if failed_sources %}
+Failed Sources: {{ failed_sources|join(', ') }}{% endif %}
+Generated At  : {{ generated_at }}
+
+{% for category_name, category_data in categories.items() %}
+{{ category_data.display_name }} ({{ category_data.count }})
+----------------------------------------
+{% for company_name, records in category_data.records_by_company.items() %}
+{{ company_name }} ({{ records|length }})
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+{% for record in records %}
+- {{ record.title }}
+  Source: {{ record.source }}
+  Date  : {{ record.publish_date }}
+  URL   : {{ record.url }}
+{% if record.summary %}  Summary: {{ record.summary }}
+{% endif %}
+{% endfor %}
+
+{% endfor %}
+
+{% endfor %}
