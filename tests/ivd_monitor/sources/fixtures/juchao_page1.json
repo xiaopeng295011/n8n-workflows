@@ -1,0 +1,27 @@
+{
+  "announcements": [
+    {
+      "announcementTitle": "贵州茅台股份有限公司2023年第三季度报告",
+      "announcementTime": 1697450400000,
+      "adjunctUrl": "finalpage/2023-10-16/1201900001.PDF",
+      "announcementId": "1201900001",
+      "secCode": "600519",
+      "secName": "贵州茅台",
+      "adjunctType": "PDF",
+      "adjunctSize": 3120456,
+      "columnId": "sse_lsgg"
+    },
+    {
+      "announcementTitle": "宁波先锋医疗科技股份有限公司关于产品临床试验进展的公告",
+      "announcementTime": 1697536800000,
+      "adjunctUrl": "finalpage/2023-10-17/1201900002.PDF",
+      "announcementId": "1201900002",
+      "secCode": "688560",
+      "secName": "宁波先锋",
+      "adjunctType": "PDF",
+      "adjunctSize": 2100456,
+      "columnId": "sse_kcb"
+    }
+  ],
+  "totalpages": 2
+}

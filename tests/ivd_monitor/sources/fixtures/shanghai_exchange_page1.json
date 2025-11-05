@@ -1,0 +1,25 @@
+{
+  "result": [
+    {
+      "SSEBulletinTitle": "上海复星医药(集团)股份有限公司关于产品获得药品注册证书的公告",
+      "companyName": "复星医药",
+      "SSESecurity": "2023-10-15T10:30:00",
+      "BULLETIN_ID": "1234567890",
+      "productId": "600196",
+      "URL": "/disclosure/listed/announcement/bulletin_1234567890.pdf"
+    },
+    {
+      "SSEBulletinTitle": "迈瑞医疗电子股份有限公司第三季度财务报告",
+      "companyName": "迈瑞医疗",
+      "SSESecurity": "2023-10-14T15:00:00",
+      "BULLETIN_ID": "1234567891",
+      "productId": "300760",
+      "URL": "https://static.sse.com.cn/disclosure/bulletin_1234567891.pdf"
+    }
+  ],
+  "pageHelp": {
+    "pageSize": 25,
+    "pageNo": 1,
+    "pageCount": 3
+  }
+}
