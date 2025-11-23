@@ -1,0 +1,200 @@
+{
+  "sources": [
+    {
+      "source_id": "cn_ccgp_procurement",
+      "collector_type": "procurement",
+      "enabled": true,
+      "region": "CN",
+      "category": "Procurement",
+      "extra_params": {
+        "mode": "json",
+        "list_url_template": "https://search.ccgp.gov.cn/bxsearch?searchtype=1&page_index={page}&bidSort=&buyerName=&projectId=&pinMu=1&bidType=0&dbselect=bidx&kw=%E5%8C%BB%E7%96%97%E5%99%A8%E6%A2%B0&start_time=&end_time=&timeType=6&displayZone=&zoneId=&pppStatus=0&agentName=",
+        "pagination": {
+          "start": 1,
+          "pages": 3
+        },
+        "json_list_path": [
+          "data",
+          "resultList"
+        ],
+        "fields": {
+          "title": {
+            "path": "title"
+          },
+          "url": {
+            "path": "url"
+          },
+          "publish_date": {
+            "path": "timeOpen",
+            "date_format": "%Y-%m-%d %H:%M:%S"
+          },
+          "summary": {
+            "path": "brief",
+            "optional": true
+          },
+          "status": {
+            "path": "pubType",
+            "optional": true
+          },
+          "budget": {
+            "path": "budget",
+            "optional": true
+          }
+        },
+        "base_url": "https://www.ccgp.gov.cn"
+      }
+    },
+    {
+      "source_id": "cn_beijing_procurement",
+      "collector_type": "procurement",
+      "enabled": true,
+      "region": "CN-11",
+      "category": "Procurement",
+      "extra_params": {
+        "mode": "html",
+        "list_url_template": "https://www.ccgp-beijing.gov.cn/xxgg/index.html",
+        "pagination": {
+          "start": 1,
+          "pages": 2,
+          "type": "query",
+          "param": "page"
+        },
+        "fields": {
+          "item_selector": {
+            "selector": "ul.notice-list > li"
+          },
+          "title": {
+            "selector": "a.notice-link"
+          },
+          "url": {
+            "selector": "a.notice-link",
+            "attr": "href"
+          },
+          "publish_date": {
+            "selector": "span.date",
+            "date_format": "%Y-%m-%d"
+          },
+          "status": {
+            "selector": "span.status",
+            "optional": true
+          },
+          "budget": {
+            "selector": "span.budget",
+            "optional": true
+          }
+        },
+        "base_url": "https://www.ccgp-beijing.gov.cn"
+      }
+    },
+    {
+      "source_id": "cn_shanghai_procurement",
+      "collector_type": "procurement",
+      "enabled": true,
+      "region": "CN-31",
+      "category": "Procurement",
+      "extra_params": {
+        "mode": "json",
+        "list_url_template": "https://www.ccgp-shanghai.gov.cn/sapi/notice/search?page={page}&pageSize=20",
+        "pagination": {
+          "start": 1,
+          "pages": 2
+        },
+        "json_list_path": [
+          "data",
+          "rows"
+        ],
+        "fields": {
+          "title": {
+            "path": "title"
+          },
+          "url": {
+            "path": "url"
+          },
+          "publish_date": {
+            "path": "publishDate",
+            "date_format": "%Y-%m-%d %H:%M:%S"
+          },
+          "status": {
+            "path": "noticeType",
+            "optional": true
+          },
+          "budget": {
+            "path": "budgetAmount",
+            "optional": true
+          }
+        },
+        "base_url": "https://www.ccgp-shanghai.gov.cn"
+      }
+    },
+    {
+      "source_id": "cn_guangdong_procurement",
+      "collector_type": "procurement",
+      "enabled": true,
+      "region": "CN-44",
+      "category": "Procurement",
+      "extra_params": {
+        "mode": "json",
+        "list_url_template": "https://gdgpo.czt.gd.gov.cn/freecms/rest/v1/notice/selectInfoMoreChannel.do?page={page}&pageSize=20&channelId=10",
+        "pagination": {
+          "start": 1,
+          "pages": 2
+        },
+        "json_list_path": [
+          "data"
+        ],
+        "fields": {
+          "title": {
+            "path": "TITLE"
+          },
+          "url": {
+            "path": "URL"
+          },
+          "publish_date": {
+            "path": "SOURCE_DATE",
+            "date_format": "%Y-%m-%d %H:%M:%S"
+          },
+          "status": {
+            "path": "NOTICE_TYPE",
+            "optional": true
+          },
+          "budget": {
+            "path": "BUDGET_AMOUNT",
+            "optional": true
+          }
+        },
+        "base_url": "https://gdgpo.czt.gd.gov.cn"
+      }
+    },
+    {
+      "source_id": "ivd_news_rss",
+      "collector_type": "rss_feed",
+      "enabled": true,
+      "region": "CN",
+      "category": "Industry Media",
+      "extra_params": {
+        "feed_url": "https://www.ivdnews.cn/feed",
+        "category": "Industry Media",
+        "timezone": "Asia/Shanghai",
+        "base_url": "https://www.ivdnews.cn"
+      }
+    },
+    {
+      "source_id": "med_device_innovation_html",
+      "collector_type": "industry_media",
+      "enabled": true,
+      "region": "CN",
+      "category": "Industry Media",
+      "extra_params": {
+        "mode": "html",
+        "list_url": "https://www.medinnovation.cn/articles",
+        "item_selector": "div.article-card",
+        "title_selector": "h2 a",
+        "url_selector": "h2 a",
+        "summary_selector": "p.summary",
+        "date_selector": "time",
+        "date_format": "%Y-%m-%d",
+        "base_url": "https://www.medinnovation.cn"
+      }
+    }
+  ]
+}

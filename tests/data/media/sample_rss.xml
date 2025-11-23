@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>IVD News</title>
+    <link>https://www.ivdnews.cn</link>
+    <description>In Vitro Diagnostics Industry News</description>
+    <item>
+      <title>New IVD Device Approved for Market</title>
+      <link>https://www.ivdnews.cn/article/2024/device-approval</link>
+      <description>A breakthrough IVD device has received regulatory approval for commercialization.</description>
+      <pubDate>Mon, 01 Mar 2024 10:00:00 +0800</pubDate>
+    </item>
+    <item>
+      <title>IVD Market Growth Forecast for 2024</title>
+      <link>https://www.ivdnews.cn/article/2024/market-forecast</link>
+      <description>Industry analysts predict strong growth in the IVD market for the coming year.</description>
+      <pubDate>Tue, 02 Mar 2024 14:30:00 +0800</pubDate>
+    </item>
+    <item>
+      <title>Duplicate Article: IVD Market Growth Forecast for 2024</title>
+      <link>https://www.ivdnews.cn/article/2024/market-forecast</link>
+      <description>Industry analysts predict strong growth in the IVD market for the coming year.</description>
+      <pubDate>Tue, 02 Mar 2024 14:30:00 +0800</pubDate>
+    </item>
+  </channel>
+</rss>
