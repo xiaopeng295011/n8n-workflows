@@ -13,8 +13,14 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     --no-install-recommends \
-    curl \
+    build-essential \
     ca-certificates \
+    curl \
+    libffi-dev \
+    libxml2-dev \
+    libxslt1-dev \
+    pkg-config \
+    zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
     && update-ca-certificates
 
